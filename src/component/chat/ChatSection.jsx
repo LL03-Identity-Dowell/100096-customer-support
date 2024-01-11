@@ -58,6 +58,7 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
         scrollContainerRef.current.scrollHeight;
     }
   }, [messages]);
+  
 
   return (
     <div className={`ml-3 flex flex-col max-h-screen w-full ${isOpen && 'hidden md:flex'}`}>

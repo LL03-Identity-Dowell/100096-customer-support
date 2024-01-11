@@ -1,5 +1,5 @@
 {
-  "name": "100096-customer-support",
+  "name": "100096-dowellchat-v2",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,9 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/free-regular-svg-icons": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@heroicons/react": "^1.0.6",
+    "@reduxjs/toolkit": "^2.0.1",
     "react": "^18.2.0",
+    "react-avatar": "^5.0.3",
     "react-dom": "^18.2.0",
-    "react-icons": "^5.0.0"
+    "react-icons": "^4.12.0",
+    "react-redux": "^9.0.4",
+    "socket.io-client": "^4.7.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
@@ -23,7 +33,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^3.3.7",
     "vite": "^5.0.8"
   }
 }
