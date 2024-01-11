@@ -1,18 +1,17 @@
-import logo from "/logo.jpg";
 import { FaMessage } from "react-icons/fa6";
 import { faL, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { USER_ID, socketInstance } from "../../services/core-providers-di";
 import { useSelector } from "react-redux";
 import ProfileAvatar from "../common/ProfileAvatar";
 import { getUserServers, watchServers } from "../../services/serverRepository";
 import ServerButtonsShimmer from "./loading/ServersLoading";
 import { getServerChannels } from "../../services/channelRepository";
 import ChannelsLoading from "./loading/ChannelsLoading";
+import { IoAddSharp } from "react-icons/io5";
 
 
-const SideBar = ({ isOpen, setIsOpen }) => {
+const SideBar = ({ isOpen, setIsOpen, setAddServerModal }) => {
   const {servers, isLoading, isError, error} = useSelector((state) => state.servers)
   const serverChannels = useSelector((state) => {
       const serverId = state.channels.server_id;
@@ -32,12 +31,13 @@ const SideBar = ({ isOpen, setIsOpen }) => {
     getServerChannels(serverId);
   }
 
+  console.log("servers", servers)
+
   return (
     <div className="flex">
-      <div className=" top-0 left-0 h-screen py-4  flex flex-col gap-4 px-[15px] items-center z-50">
-        <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-500"></div>
+      <div className=" h-screen py-4 px-[15px]">
 
-        <div className="relative h-[40px]">
+        <div className="relative h-[40px] mb-4">
               <FaMessage
                 onClick={() => setActiveBorder(-1)}
                 className={`cursor-pointer w-10 text-green-500 rounded-md  h-10 `}
@@ -48,9 +48,10 @@ const SideBar = ({ isOpen, setIsOpen }) => {
 
               {activeBorder === -1 && (
                 <p className="cursor-pointer w-full h-[2px] bg-[#94a3b8] absolute left-0 rounded-r-[100px]  bottom-[-7px]"></p>
-              )}
+              )}              
         </div>
-
+          
+        <div className="overflow-y-auto overflow-x-hidden my-2 h-[90%] flex flex-col gap-4 items-center">
           {
             isLoading ? (
                 <ServerButtonsShimmer />
@@ -68,7 +69,9 @@ const SideBar = ({ isOpen, setIsOpen }) => {
                 ))
             )
           }
-
+        </div>
+        
+      <IoAddSharp className="mt-auto text-white cursor-pointer w-10 h-10 z-10 rounded-lg bg-green-400" onClick={() => setAddServerModal(true)}/>
       </div>
 
       {isOpen && (

@@ -6,14 +6,3 @@ const SocketURL =  'http://www.dowellchat.uxlivinglab.online/';
 
 export const socketInstance = io(SocketURL);
 
-// let socket;
-
-// export default function provideSocket() {
-
-//     if (!socket) {
-//         socket = io(SocketURL);
-//     }
-    
-//     return socket ;
-// } 
-
