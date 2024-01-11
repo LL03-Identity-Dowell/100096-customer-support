@@ -16,14 +16,14 @@ export function createServer (data) {
 }
 
 
-export function watchServers (fromComponent={}) {
+export function watchServers () {
     socketInstance.on('server_response', (data) => {
         if(data.operation === 'get_user_servers'){
             store.dispatch(setServers(data))
         }else if(data.operation === 'create_server') {
             store.dispatch(addServer({
                 data,
-                name: fromComponent?.name || 'this is it'
+                name: 'HardCoded'
             }))
         }
   })

@@ -12,6 +12,8 @@ import { IoAddSharp } from "react-icons/io5";
 
 const SideBar = ({ isOpen, setIsOpen, setAddServerModal }) => {
   const {servers, isLoading, isError, error} = useSelector((state) => state.servers)
+  const [serverName, setServeName] = useState('');
+  const server_id = useSelector((state) => state.channels.server_id);
   const serverChannels = useSelector((state) => {
       const serverId = state.channels.server_id;
       return state.channels[serverId];
@@ -22,6 +24,13 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal }) => {
     setActiveBorder(index)
     getServerChannels(serverId);
   }
+
+  useEffect(() => {
+    const server = servers?.filter((server) => server.id == server_id)
+    if (server){
+      setServeName(server[0]?.name)
+    }
+  }, [server_id])
 
   return (
     <div className="flex">
@@ -66,7 +75,7 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal }) => {
 
       {isOpen && (
         <div className={`flex flex-col gap-4 pt-7 bg-white rounded-lg px-4 `}>
-          <h1 className="font-bold">WORKFLOWAI</h1>
+          <h1 className="font-bold capitalize">{serverName}</h1>
           <div className="max-w-md mx-auto px-2 flex items-center bg-gray-200 rounded-sm">
             <input
               type="text"
@@ -104,6 +113,8 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal }) => {
           }
         </div>
       )}
+
+      
     </div>
   );
 };
