@@ -38,10 +38,10 @@ const SettingPage = () => {
               </div>
             </div>
             <div>
-              <p className="text-sm">
-                <span className="mr-2">
-                  Showing 1 to {rowsPerPage} out of 15
-                </span>
+              <p className="text-sm mr-2">
+                Showing <span className="font-semibold"> 1 {""} </span> to {""}
+                <span className="font-semibold">{rowsPerPage}</span> out of{" "}
+                <span className="font-semibold">15</span>
                 {/* <FontAwesomeIcon icon={faChevronRight} /> */}
               </p>
             </div>

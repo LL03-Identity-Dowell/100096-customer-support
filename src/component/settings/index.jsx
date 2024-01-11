@@ -1,4 +1,5 @@
-import * as React from "react";
+/* eslint-disable react/prop-types */
+// import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,41 +13,38 @@ const columns = [
   {
     id: "sl",
     label: "sl",
-    minWidth: 170,
+    minWidth: 100,
+    align: "center",
   },
-
   {
     id: "name",
     label: "name",
-    minWidth: 100,
+    minWidth: 120,
   },
   {
     id: "assigned_role",
     label: "assigned_role",
     minWidth: 170,
-    align: "right",
     // format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "server",
     label: "server",
     minWidth: 170,
-    align: "right",
     // format: (value) => value.toLocaleString("en-US"),
+  },
+  {
+    id: "action",
+    label: "action",
+    minWidth: 100,
+    // format: (value) => value.toFixed(2),
   },
   {
     id: "channel",
     label: "channel",
     minWidth: 170,
-    align: "right",
+    align: "center",
     format: (value) => value.toFixed(2),
-  },
-  {
-    id: "action",
-    label: "action",
-    minWidth: 170,
-    align: "right",
-    // format: (value) => value.toFixed(2),
   },
 ];
 
@@ -60,7 +58,7 @@ const rows = [
     1,
     "Thomas Managing Director",
     "Super admin",
-    3287263,
+    4683478,
     45,
     "no acttion"
   ),
@@ -86,7 +84,6 @@ const rows = [
   createData(14, "NG", "Viewer", 923768, 45, "no acttion"),
   createData(15, "BR", "No role assigned", 8515767, 45, "no acttion"),
 ];
-
 export default function Settings({
   page,
   rowsPerPage,
@@ -118,11 +115,11 @@ export default function Settings({
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
                       const value = row[column.id];
+
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
+                          {value}
+                          {/* {column.format && typeof value === "number"  ? column.format(value)  : value} */}
                         </TableCell>
                       );
                     })}

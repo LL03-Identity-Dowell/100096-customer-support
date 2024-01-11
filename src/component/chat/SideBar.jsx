@@ -77,7 +77,7 @@ const SideBar = ({ isOpen, setIsOpen }) => {
             icon={faGear}
             fontSize="25px"
             cursor="pointer"
-            className="bg-gray-300 absolute bottom-4 left-5"
+            className="text-black absolute bottom-4 left-5"
           />
         </NavLink>
       </div>
