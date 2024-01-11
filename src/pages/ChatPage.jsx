@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { socketSlice } from "../redux/features/chat/socket-slice";
 import PopupModal from "../component/common/PopupModal";
 import AddServerForm from "../component/chat/AddServerForm";
-import { watchServers } from "../services/serverRepository";
+import { watchServers,getUserServers } from "../services/serverRepository";
 import { useSelector } from "react-redux";
 
 const ChatPage = () => {
@@ -35,6 +35,7 @@ const ChatPage = () => {
     useEffect(() => {
       if(isConnected) {
         watchServers();
+        getUserServers();
       }
     }, [isConnected])
 

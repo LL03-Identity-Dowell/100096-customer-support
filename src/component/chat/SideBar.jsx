@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ProfileAvatar from "../common/ProfileAvatar";
-import { getUserServers, watchServers } from "../../services/serverRepository";
 import ServerButtonsShimmer from "./loading/ServersLoading";
 import { getServerChannels } from "../../services/channelRepository";
 import ChannelsLoading from "./loading/ChannelsLoading";
@@ -18,20 +17,11 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal }) => {
       return state.channels[serverId];
   })
   const [activeBorder, setActiveBorder] = useState(-1);
-  const isConnected  = useSelector((state) => state.socket.isConnected)
-
-  useEffect(() => {
-    if(isConnected) {
-      getUserServers()
-    }
-  }, [isConnected]);
 
   const handleServerClick = (serverId, index) => {
     setActiveBorder(index)
     getServerChannels(serverId);
   }
-
-  console.log("servers", servers)
 
   return (
     <div className="flex">
