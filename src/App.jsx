@@ -1,14 +1,8 @@
+import ChatPage from "./pages/ChatPage";
 
-import './App.css'
-import ChatPage from './pages/ChatPage'
-
-function App() {
+export default function App() {
 
   return (
-    <div className='w-full h-full'>
-      <ChatPage />
-    </div>
-  )
+    <ChatPage />
+  );
 }
-
-export default App
