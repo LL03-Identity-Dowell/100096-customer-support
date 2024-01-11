@@ -1,6 +1,6 @@
-import LoginPage from "./pages/LoginPage";
-import Dashboard from "./pages/Dashboard";
-import Avatar from "react-avatar";
+// import LoginPage from "./pages/LoginPage";
+// import Dashboard from "./pages/Dashboard";
+// import Avatar from "react-avatar";
 
 export default function App() {
   return (
