@@ -1,13 +1,13 @@
 import {Form, useForm} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import FormInput from '../common/FormInput';
+import FormInput from '../../common/FormInput';
 import { CiHashtag } from "react-icons/ci";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { USER_ID } from '../../services/core-providers-di';
+import { USER_ID } from '../../../services/core-providers-di';
 import { PiSpeakerHigh } from "react-icons/pi";
-import { createChannel } from '../../services/channelRepository';
+import { createChannel } from '../../../services/channelRepository';
 
 
 const schema = yup.object().shape({
@@ -15,7 +15,7 @@ const schema = yup.object().shape({
     channelType: yup.string().required('Please select a channel type').oneOf(['text', 'voice']),
 })
 
-const CreateChannelForm = ({setShowModal}) => {
+const CreateChannelForm = ({toggleModals}) => {
 
     const server_id = useSelector((state) => state.channels.server_id);
     const serverChannels = useSelector((state) => {
@@ -46,7 +46,7 @@ const CreateChannelForm = ({setShowModal}) => {
     useEffect(() => {
         const success = serverChannels?.success
         if( success == true && isSubmitted) {
-            setShowModal(false);
+            toggleModals('channelModal', false)
         }
     }, [isSubmitted, serverChannels?.success])
 

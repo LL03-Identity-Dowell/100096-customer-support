@@ -1,17 +1,17 @@
 import {Form, useForm} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import FormInput from '../common/FormInput';
-import { createServer } from '../../services/serverRepository';
+import FormInput from '../../common/FormInput';
+import { createServer } from '../../../services/serverRepository';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { USER_ID } from '../../services/core-providers-di';
+import { USER_ID } from '../../../services/core-providers-di';
 
 const schema = yup.object().shape({
     name:  yup.string().required("Please enter your valid server name").min(5, "Server name should be longer than 5 characters"),
 })
 
-const AddServerForm = ({setAddServerModal}) => {
+const AddServerForm = ({toggleModals}) => {
 
     const {success, isError, error} = useSelector((state) => state.servers);
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -34,7 +34,7 @@ const AddServerForm = ({setAddServerModal}) => {
 
     useEffect(() => {
         if(success && isSubmitted) {
-            setAddServerModal(false);
+            toggleModals('showAddServerModal', false);
         }
     }, [isSubmitted, success])
 

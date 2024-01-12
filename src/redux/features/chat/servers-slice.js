@@ -1,63 +1,83 @@
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import { createSlice } from "@reduxjs/toolkit";
 
-let _initialState = {
-    isLoading : true,
-    isError: false,
-    success: false,
-    error: '',
-    servers: []
-}
+const initialState = {
+  isLoading: true,
+  isError: false,
+  success: false,
+  error: "",
+  servers: [],
+};
+
+const handleApiResult = (state, action) => {
+  const data = action.payload.data;
+
+  if (data.status === "success") {
+    state.isLoading = false;
+    state.success = true;
+    state.isError = false;
+    state.error = "";
+  } else {
+    state.isLoading = false;
+    state.isError = true;
+    state.error = data.data;
+    state.servers = state.servers;
+    state.success = false;
+  }
+};
 
 export const serversSlice = createSlice({
-    name: 'servers',
-    initialState: _initialState,
-    reducers: {
-        setServers(state, action) {
-            let data = action.payload;
-            if (data.status == 'success') {
-                state.isLoading = false;
-                state.success = true;
-                state.isError = false;
-                state.servers = data.data;
-                state.error = '';
-            } else {
-                state.isLoading = false;
-                state.isError = true;
-                state.error = data.data;
-                state.servers = []
-                state.success = false;
-            }
-        },
-        setLoading(state, action) {
-          state.isLoading = action.payload;  
-        },
-        setSuccess(state, action) {
-            state.success = action.payload;
-        },
-        addServer(state, action) {
-            let data = action.payload.data;
-            let server_name = action.payload.name;
+  name: "servers",
+  initialState: initialState,
+  reducers: {
+    setServers(state, action) {
+        handleApiResult(state, action);
+        const data = action.payload;
+        state.servers = data.status === "success" ? data.data : [];
+    },
+    setLoading(state, action) {
+      state.isLoading = action.payload;
+    },
+    setSuccess(state, action) {
+      state.success = action.payload;
+    },
+    addServer(state, action) {
+      handleApiResult(state, action);
+    const data = action.payload.data;
+      if (data.status === "success") {
+        const server_name = action.payload.name;
+        state.servers.push({
+          name: server_name,
+          id: "12345324523453",
+        });
+      }
+    },
 
-            if (data.status == 'success') {
-                state.isLoading = false;
-                state.success = true;
-                state.isError = false;
-                state.servers.push({
-                    name : server_name,
-                    id: '12345324523453'
-                });
-                state.error = '';
-            } else {
-                state.isLoading = false;
-                state.isError = true;
-                state.error = data.data;
-                state.servers = state.servers;
-                state.success = false;
-            }
+    setDeleteServer(state, action) {
+      handleApiResult(state, action);
+      const data = action.payload.data;
+        if(data.status == 'success') {
+            const deletedServerId = action.payload.serverId;
+            state.servers = state.servers.filter(
+              (server) => server.id !== deletedServerId
+            );
         }
-    }
-})
+    },
 
-export const { setServers, setLoading, addServer, setSuccess } = serversSlice.actions;
+    setUpdatedServer(state, action) {
+      handleApiResult(state, action);
+      const data = action.payload.data;
+      const serverId = action.payload.serverId;
+      const newServerName = action.payload.serverName;
+      if(data.status == 'success') {
+        const serverIndex = state.servers.findIndex(server => server.id === serverId);
+        if (serverIndex !== -1) {
+          state.servers[serverIndex].name = newServerName;
+        }
+      }
+
+    }
+  },
+});
+
+export const { setServers, setLoading, addServer, setSuccess, setDeleteServer, setUpdatedServer } = serversSlice.actions;
 export default serversSlice.reducer;

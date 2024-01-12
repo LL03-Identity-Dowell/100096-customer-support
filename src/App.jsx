@@ -1,8 +1,9 @@
 import ChatPage from "./pages/ChatPage";
-import './App.css';
-export default function App() {
+import "./App.css";
+import useDowellLogin from "./hooks/useDowellLogin";
 
-  return (
-    <ChatPage />
-  );
+export default function App() {
+  useDowellLogin();
+
+  return <ChatPage />;
 }
