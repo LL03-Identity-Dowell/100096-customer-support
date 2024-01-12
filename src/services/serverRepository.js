@@ -6,6 +6,7 @@ import { addServer, setLoading, setServers, setSuccess, setDeleteServer, setUpda
 let rightClickedServerId;
 let updatedServerName;
 
+let serverName;
 export function getUserServers () {
     store.dispatch(setLoading(true))
     socketInstance.emit('get_user_servers', {
@@ -15,6 +16,7 @@ export function getUserServers () {
 
 export function createServer (data) {
     store.dispatch(setSuccess(false));
+    serverName = data.name;
     socketInstance.emit('create_server', data)
 }
 
@@ -38,7 +40,7 @@ export function watchServers () {
         }else if(data.operation === 'create_server') {
             store.dispatch(addServer({
                 data,
-                name: 'HardCoded'
+                name: serverName
             }))
         }else if(data.operation === 'delete_server') {
             store.dispatch(setDeleteServer({
