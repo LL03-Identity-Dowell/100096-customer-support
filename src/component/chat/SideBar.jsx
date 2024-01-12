@@ -10,7 +10,7 @@ import ChannelsLoading from "./loading/ChannelsLoading";
 import { IoAddSharp } from "react-icons/io5";
 
 
-const SideBar = ({ isOpen, setIsOpen, setAddServerModal }) => {
+const SideBar = ({ isOpen, setIsOpen, setAddServerModal, setChannelModal }) => {
   const {servers, isLoading, isError, error} = useSelector((state) => state.servers)
   const [serverName, setServeName] = useState('');
   const server_id = useSelector((state) => state.channels.server_id);
@@ -31,6 +31,7 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal }) => {
       setServeName(server[0]?.name)
     }
   }, [server_id])
+
 
   return (
     <div className="flex">
@@ -74,8 +75,12 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal }) => {
       </div>
 
       {isOpen && (
-        <div className={`flex flex-col gap-4 pt-7 bg-white rounded-lg px-4 `}>
-          <h1 className="font-bold capitalize">{serverName}</h1>
+        <div className={`flex flex-col gap-4 pt-7 bg-white rounded-lg px-4 overflow-x-hidden overflow-y-auto`}>
+          <div className="flex items-center justify-between">
+            <h1 className="font-bold capitalize">{serverName}</h1>
+             <IoAddSharp  className="w-5 h-5 cursor-pointer" onClick={() => setChannelModal(true)}/>
+          </div>
+
           <div className="max-w-md mx-auto px-2 flex items-center bg-gray-200 rounded-sm">
             <input
               type="text"
@@ -92,24 +97,25 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal }) => {
               <p>{serverChannels?.error}</p>
             ) : (
               serverChannels?.channels?.map((item, index) => (
-                <button
-                  className="flex gap-3 items-center mb-2"
-                  key={index}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <img
-                    src="avatar.jpg"
-                    className="w-10 h-10 rounded-full mb-4 bg-yellow-500"
-                    alt={`User ${index}`}
-                  />
-                  <div className="text-left">
-                    <p className="text-sm font-semibold">{item} </p>
-                    <p className="text-sm font-semibold my-0.5">cb1be95</p>
-                    <p className="text-xs font-semibold">WORKFLOWAI </p>
-                  </div>
-                </button>
+                  <button
+                    key={index}
+                    className="flex gap-3 items-center mb-2 "
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <img
+                      src="avatar.jpg"
+                      className="w-10 h-10 rounded-full mb-4 bg-yellow-500"
+                      alt={`User ${index}`}
+                    />
+                    <div className="text-left">
+                      <p className="text-sm font-semibold">{item} </p>
+                      <p className="text-sm font-semibold my-0.5">cb1be95</p>
+                      <p className="text-xs font-semibold">WORKFLOWAI </p>
+                    </div>
+                  </button>
               ))
             )
+
           }
         </div>
       )}

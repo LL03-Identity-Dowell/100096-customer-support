@@ -8,12 +8,15 @@ import PopupModal from "../component/common/PopupModal";
 import AddServerForm from "../component/chat/AddServerForm";
 import { watchServers,getUserServers } from "../services/serverRepository";
 import { useSelector } from "react-redux";
+import CreateChannelForm from "../component/chat/CreateChannelForm";
+import { watchChannels } from "../services/channelRepository";
 
 const ChatPage = () => {
     const [isOpen, setIsOpen] = useState(true);
     const isConnected  = useSelector((state) => state.socket.isConnected)
     const dispatch = useDispatch();
     const [showAddServerModal, setAddServerModal] = useState(false);
+    const [channelModal, setChannelModal] = useState(false)
     const handleSideBarToggle = () => {
       setIsOpen(!isOpen);
     };
@@ -35,12 +38,16 @@ const ChatPage = () => {
     useEffect(() => {
       if(isConnected) {
         watchServers();
+        watchChannels();
         getUserServers();
       }
     }, [isConnected])
 
     const toggleModal = () => {
       setAddServerModal(!showAddServerModal)
+    }
+    const toggleChannelModal = () => {
+      setChannelModal(!channelModal)
     }
   
     return (
@@ -50,6 +57,7 @@ const ChatPage = () => {
           setIsOpen={setIsOpen}
           handleSideBarToggle={handleSideBarToggle}
           setAddServerModal={setAddServerModal}
+          setChannelModal={setChannelModal}
         />
         <ChatSection
           isOpen={isOpen}
@@ -61,6 +69,14 @@ const ChatPage = () => {
           showAddServerModal && (
             <PopupModal toggleModal={toggleModal}>
               <AddServerForm setAddServerModal={setAddServerModal} />
+            </PopupModal>
+          )
+        }
+
+        {
+          channelModal && (
+            <PopupModal toggleModal={toggleChannelModal}>
+              <CreateChannelForm setShowModal={setChannelModal}/>
             </PopupModal>
           )
         }
