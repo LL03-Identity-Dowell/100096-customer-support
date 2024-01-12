@@ -5,18 +5,24 @@ import { socketInstance } from "../services/core-providers-di";
 import { useDispatch } from "react-redux";
 import { socketSlice } from "../redux/features/chat/socket-slice";
 import PopupModal from "../component/common/PopupModal";
-import AddServerForm from "../component/chat/AddServerForm";
+import AddServerForm from "../component/chat/forms/AddServerForm";
 import { watchServers,getUserServers } from "../services/serverRepository";
 import { useSelector } from "react-redux";
-import CreateChannelForm from "../component/chat/CreateChannelForm";
+import CreateChannelForm from "../component/chat/forms/CreateChannelForm";
 import { watchChannels } from "../services/channelRepository";
+import EditServerForm from "../component/chat/forms/EditServerForm";
 
 const ChatPage = () => {
     const [isOpen, setIsOpen] = useState(true);
     const isConnected  = useSelector((state) => state.socket.isConnected)
     const dispatch = useDispatch();
-    const [showAddServerModal, setAddServerModal] = useState(false);
-    const [channelModal, setChannelModal] = useState(false)
+    const [modals, setModals] = useState({
+      showAddServerModal: false,
+      channelModal: false,
+      editServerModal: false
+    });
+    const [rightClickedServer, setRightClickedServer] = useState(null);
+  
     const handleSideBarToggle = () => {
       setIsOpen(!isOpen);
     };
@@ -43,12 +49,22 @@ const ChatPage = () => {
       }
     }, [isConnected])
 
-    const toggleModal = () => {
-      setAddServerModal(!showAddServerModal)
-    }
-    const toggleChannelModal = () => {
-      setChannelModal(!channelModal)
-    }
+
+    const toggleModals = (modalName, value) => {
+      if(value !== undefined){
+        setModals((prevModals) => ({
+          ...prevModals,
+          [modalName]: value,
+        }));
+      }else{
+        setModals((prevModals) => ({
+          ...prevModals,
+          [modalName]: !prevModals[modalName],
+        }));
+      }
+    };
+  
+    
   
     return (
       <div className="h-screen flex bg-gray-300">
@@ -56,8 +72,9 @@ const ChatPage = () => {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           handleSideBarToggle={handleSideBarToggle}
-          setAddServerModal={setAddServerModal}
-          setChannelModal={setChannelModal}
+          toggleModals={toggleModals}
+          setRightClickedServer={setRightClickedServer}
+          rightClickedServer={rightClickedServer}
         />
         <ChatSection
           isOpen={isOpen}
@@ -66,18 +83,26 @@ const ChatPage = () => {
         />
 
         {
-          showAddServerModal && (
-            <PopupModal toggleModal={toggleModal}>
-              <AddServerForm setAddServerModal={setAddServerModal} />
+          modals.showAddServerModal && (
+            <PopupModal toggleModals={toggleModals} modalName='showAddServerModal'>
+              <AddServerForm toggleModals={toggleModals} />
             </PopupModal>
           )
         }
 
         {
-          channelModal && (
-            <PopupModal toggleModal={toggleChannelModal}>
-              <CreateChannelForm setShowModal={setChannelModal}/>
+          modals.channelModal && (
+            <PopupModal toggleModals={toggleModals} modalName='channelModal'>
+              <CreateChannelForm toggleModals={toggleModals} />
             </PopupModal>
+          )
+        }
+
+        {
+          modals.editServerModal && (
+          <PopupModal toggleModals={toggleModals} modalName='editServerModal'>
+            <EditServerForm toggleModals={toggleModals} rightClickedServer={rightClickedServer}/>
+          </PopupModal>
           )
         }
       </div>

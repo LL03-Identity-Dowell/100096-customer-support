@@ -8,9 +8,11 @@ import ServerButtonsShimmer from "./loading/ServersLoading";
 import { getServerChannels } from "../../services/channelRepository";
 import ChannelsLoading from "./loading/ChannelsLoading";
 import { IoAddSharp } from "react-icons/io5";
+import CustomContextMenu from "./CustomContextMenu";
+import { deleteServer } from "../../services/serverRepository";
 
 
-const SideBar = ({ isOpen, setIsOpen, setAddServerModal, setChannelModal }) => {
+const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRightClickedServer }) => {
   const {servers, isLoading, isError, error} = useSelector((state) => state.servers)
   const [serverName, setServeName] = useState('');
   const server_id = useSelector((state) => state.channels.server_id);
@@ -19,11 +21,8 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal, setChannelModal }) => {
       return state.channels[serverId];
   })
   const [activeBorder, setActiveBorder] = useState(-1);
-
-  const handleServerClick = (serverId, index) => {
-    setActiveBorder(index)
-    getServerChannels(serverId);
-  }
+  const [contextMenuPosition, setContextMenuPosition] = useState(null);
+  // const [rightClickedServer, setRightClickedServer] = useState(null);
 
   useEffect(() => {
     const server = servers?.filter((server) => server.id == server_id)
@@ -32,7 +31,31 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal, setChannelModal }) => {
     }
   }, [server_id])
 
+  const handleServerClick = (serverId, index) => {
+    setActiveBorder(index)
+    getServerChannels(serverId);
+  }
 
+  const handleServerDelete = () => {
+    deleteServer(rightClickedServer.id);
+    setContextMenuPosition(null);
+    setRightClickedServer(null);
+  };
+
+  const handleServerEdit = () => {
+    toggleModals('editServerModal', true);
+  }
+
+  const handleContextMenu = (e, id, name) => {
+    e.preventDefault();
+    setContextMenuPosition({ x: e.clientX, y: e.clientY });
+    setRightClickedServer({
+      id,
+      name
+    });
+  };
+
+  
   return (
     <div className="flex">
       <div className=" h-screen py-4 px-[15px]">
@@ -57,7 +80,7 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal, setChannelModal }) => {
                 <ServerButtonsShimmer />
             ) : (
                 servers?.map(({name, id}, index) => (
-                  <button className="relative h-[40px]" id={id} key={index} onClick={() => handleServerClick(id, index)}>
+                  <button onContextMenu={(e) => handleContextMenu(e, id, name)}  className="relative h-[40px]" id={id} key={index} onClick={() => {handleServerClick(id, index)}}>
                     <ProfileAvatar fullName={name} />
                     {activeBorder === index && (
                       <p className=" w-[6px] h-[80%] bg-green-500 absolute left-[-15px] rounded-r-[100px]  top-[2px]"></p>
@@ -71,14 +94,14 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal, setChannelModal }) => {
           }
         </div>
         
-      <IoAddSharp className="mt-auto text-white cursor-pointer w-10 h-10 z-10 rounded-lg bg-green-400" onClick={() => setAddServerModal(true)}/>
+      <IoAddSharp className="mt-auto text-white cursor-pointer w-10 h-10 z-10 rounded-lg bg-green-400" onClick={() => toggleModals('showAddServerModal',true)}/>
       </div>
 
       {isOpen && (
         <div className={`flex flex-col gap-4 pt-7 bg-white rounded-lg px-4 overflow-x-hidden overflow-y-auto`}>
           <div className="flex items-center justify-between">
             <h1 className="font-bold capitalize">{serverName}</h1>
-             <IoAddSharp  className="w-5 h-5 cursor-pointer" onClick={() => setChannelModal(true)}/>
+             <IoAddSharp  className="w-5 h-5 cursor-pointer" onClick={() => toggleModals('channelModal', true)}/>
           </div>
 
           <div className="max-w-md mx-auto px-2 flex items-center bg-gray-200 rounded-sm">
@@ -120,7 +143,11 @@ const SideBar = ({ isOpen, setIsOpen, setAddServerModal, setChannelModal }) => {
         </div>
       )}
 
-      
+      {
+        contextMenuPosition && (
+          <CustomContextMenu x={contextMenuPosition?.x} y={contextMenuPosition?.y} setContextMenuPosition={setContextMenuPosition} onDelete={handleServerDelete} onEdit={handleServerEdit} />
+        )
+      }
     </div>
   );
 };
