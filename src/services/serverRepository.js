@@ -1,4 +1,4 @@
-import { socketInstance } from "./core-providers-di.js";
+import { addCommonProps, socketInstance } from "./core-providers-di.js";
 import { USER_ID } from "./core-providers-di.js";
 import { store } from '../redux/store.js'
 import { addServer, setLoading, setServers, setSuccess, setDeleteServer, setUpdatedServer } from "../redux/features/chat/servers-slice.js";
@@ -9,28 +9,28 @@ let updatedServerName;
 let serverName;
 export function getUserServers () {
     store.dispatch(setLoading(true))
-    socketInstance.emit('get_user_servers', {
+    socketInstance.emit('get_user_servers', addCommonProps({
         user_id : USER_ID
-    });
+    }));
 }
 
 export function createServer (data) {
     store.dispatch(setSuccess(false));
     serverName = data.name;
-    socketInstance.emit('create_server', data)
+    socketInstance.emit('create_server', addCommonProps(data))
 }
 
 export function deleteServer(serverId) {
     rightClickedServerId = serverId;
     store.dispatch(setSuccess(false));
-    socketInstance.emit('delete_server', { server_id: serverId });
+    socketInstance.emit('delete_server', addCommonProps({ server_id: serverId }));
 }
 
 export function editServer(data, serverId) {
     rightClickedServerId = serverId;
     updatedServerName = data.name;
     store.dispatch(setSuccess(false));
-    socketInstance.emit('update_server', data)
+    socketInstance.emit('update_server', addCommonProps(data))
 }
 
 export function watchServers () {

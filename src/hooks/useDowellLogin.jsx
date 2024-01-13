@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   getUserInfoFromClientAdmin,
@@ -11,6 +11,7 @@ import {
 } from "../utils/utils";
 
 export default function useDowellLogin() {
+  const [loggedIn, setLoggedIn] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
@@ -21,6 +22,7 @@ export default function useDowellLogin() {
     if (localUserDetails) {
       // YOU CAN SAVE THE CURRENT USER TO A STATE TO USE IN THE APP
       console.log("current user: ", localUserDetails);
+      setLoggedIn(true);
       return;
     }
 
@@ -32,6 +34,7 @@ export default function useDowellLogin() {
               USER_KEY_IN_SESSION_STORAGE,
               JSON.stringify(res.data)
             );
+            setLoggedIn(true);
           })
           .catch((err) => {
             console.log(err);
@@ -46,6 +49,7 @@ export default function useDowellLogin() {
             USER_KEY_IN_SESSION_STORAGE,
             JSON.stringify(res.data)
           );
+          setLoggedIn(true);
         })
         .catch((err) => {
           console.log(err);
@@ -58,4 +62,6 @@ export default function useDowellLogin() {
     sessionStorage.clear();
     window.location.replace(PRODUCT_LOGIN_URL);
   }, []);
+
+  return loggedIn;
 }
