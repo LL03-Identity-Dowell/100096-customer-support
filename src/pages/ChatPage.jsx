@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 import CreateChannelForm from "../component/chat/forms/CreateChannelForm";
 import { watchChannels } from "../services/channelRepository";
 import EditServerForm from "../component/chat/forms/EditServerForm";
+import { watchCategory } from "../services/catagoryRepository";
+import CreateCategoryForm from "../component/chat/forms/CreateCategoryForm";
 
 const ChatPage = () => {
     const [isOpen, setIsOpen] = useState(true);
@@ -19,7 +21,8 @@ const ChatPage = () => {
     const [modals, setModals] = useState({
       showAddServerModal: false,
       channelModal: false,
-      editServerModal: false
+      editServerModal: false,
+      categoryModal: false
     });
     const [rightClickedServer, setRightClickedServer] = useState(null);
   
@@ -45,6 +48,7 @@ const ChatPage = () => {
       if(isConnected) {
         watchServers();
         watchChannels();
+        watchCategory();
         getUserServers();
       }
     }, [isConnected])
@@ -103,6 +107,14 @@ const ChatPage = () => {
           <PopupModal toggleModals={toggleModals} modalName='editServerModal'>
             <EditServerForm toggleModals={toggleModals} rightClickedServer={rightClickedServer}/>
           </PopupModal>
+          )
+        }
+
+        {
+          modals.categoryModal && (
+            <PopupModal toggleModals={toggleModals} modalName='categoryModal'>
+              <CreateCategoryForm toggleModals={toggleModals}/>
+            </PopupModal>
           )
         }
       </div>

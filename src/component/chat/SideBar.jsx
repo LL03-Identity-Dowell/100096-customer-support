@@ -10,19 +10,20 @@ import ChannelsLoading from "./loading/ChannelsLoading";
 import { IoAddSharp } from "react-icons/io5";
 import CustomContextMenu from "./CustomContextMenu";
 import { deleteServer } from "../../services/serverRepository";
-
+import { getServerCategory } from "../../services/catagoryRepository";
+import { CiCircleChevDown } from "react-icons/ci";
+import { CiCircleChevUp } from "react-icons/ci";
 
 const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRightClickedServer }) => {
   const {servers, isLoading, isError, error} = useSelector((state) => state.servers)
   const [serverName, setServeName] = useState('');
-  const server_id = useSelector((state) => state.channels.server_id);
-  const serverChannels = useSelector((state) => {
-      const serverId = state.channels.server_id;
-      return state.channels[serverId];
+  const server_id = useSelector((state) => state.categories.server_id);
+  const categoryServer = useSelector((state) => {
+      const serverId = state.categories.server_id;
+      return state.categories[serverId];
   })
   const [activeBorder, setActiveBorder] = useState(-1);
   const [contextMenuPosition, setContextMenuPosition] = useState(null);
-  // const [rightClickedServer, setRightClickedServer] = useState(null);
 
   useEffect(() => {
     const server = servers?.filter((server) => server.id == server_id)
@@ -33,7 +34,8 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
 
   const handleServerClick = (serverId, index) => {
     setActiveBorder(index)
-    getServerChannels(serverId);
+    // getServerChannels(serverId);
+    getServerCategory(serverId);
   }
 
   const handleServerDelete = () => {
@@ -54,6 +56,10 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
       name
     });
   };
+
+  const handleCategoryClick = () => {
+
+  }
 
   
   return (
@@ -101,7 +107,7 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
         <div className={`flex flex-col gap-4 pt-7 bg-white rounded-lg px-4 overflow-x-hidden overflow-y-auto`}>
           <div className="flex items-center justify-between">
             <h1 className="font-bold capitalize">{serverName}</h1>
-             <IoAddSharp  className="w-5 h-5 cursor-pointer" onClick={() => toggleModals('channelModal', true)}/>
+             <IoAddSharp  className="w-5 h-5 cursor-pointer" onClick={() => toggleModals('categoryModal', true)}/>
           </div>
 
           <div className="max-w-md mx-auto px-2 flex items-center bg-gray-200 rounded-sm">
@@ -114,28 +120,31 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
             <FontAwesomeIcon icon={faSearch} className="text-gray-400 pr-1" />
           </div>
           {
-            serverChannels?.isLoading ? (
+            categoryServer?.isLoading ? (
               <ChannelsLoading />
-            ) : serverChannels?.isError ? (
-              <p>{serverChannels?.error}</p>
+            ) : categoryServer?.isError ? (
+              <p>{categoryServer?.error}</p>
             ) : (
-              serverChannels?.channels?.map((item, index) => (
+              categoryServer?.categories?.map(({id, name}, index) => (
+                <>
                   <button
+                    id={id}
                     key={index}
-                    className="flex gap-3 items-center mb-2 "
-                    onClick={() => setIsOpen(false)}
+                    className="flex gap-3 items-center justify-between mb-2 border-2 border-black/10 p-2"
+                    onClick={handleCategoryClick}
                   >
                     <img
                       src="avatar.jpg"
-                      className="w-10 h-10 rounded-full mb-4 bg-yellow-500"
+                      className="w-10 h-10 rounded-full bg-yellow-500"
                       alt={`User ${index}`}
                     />
-                    <div className="text-left">
-                      <p className="text-sm font-semibold">{item} </p>
-                      <p className="text-sm font-semibold my-0.5">cb1be95</p>
-                      <p className="text-xs font-semibold">WORKFLOWAI </p>
-                    </div>
+                    <p className="text-left text-sm font-semibold">{name} </p>
+                    <CiCircleChevDown className="text-black font-bold w-10"/>
                   </button>
+
+                  <div className="pl-8">
+                  </div>
+                </>
               ))
             )
 
