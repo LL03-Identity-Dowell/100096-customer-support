@@ -15,10 +15,7 @@ export const getServerCategory = (serverId) => {
         server_id: serverId
     }))
     socketInstance.emit('cs_get_server_category', addCommonProps({server_id: serverId}))
-    socketInstance.emit('cs_get_user_category', addCommonProps({
-        server_id: serverId,
-        user_id: '6363ee91137d4469c7382a33'
-    }))
+
     server_id = serverId;
 }
 
@@ -35,7 +32,7 @@ export const createCategory = (categoryData) => {
 export const watchCategory = () => {
 
     socketInstance.on('category_response', (data) => {
-        console.log('category_response', data)
+        // console.log('category_response', data)
         if(data.operation == 'get_server_category'){
             store.dispatch(setCategories({
                 data,

@@ -35,6 +35,7 @@ export function editServer(data, serverId) {
 
 export function watchServers () {
     socketInstance.on('server_response', (data) => {
+        // console.log("server_response", data)
         if(data.operation === 'get_user_servers'){
             store.dispatch(setServers(data))
         }else if(data.operation === 'create_server') {

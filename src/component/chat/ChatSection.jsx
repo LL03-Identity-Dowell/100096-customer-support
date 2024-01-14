@@ -6,49 +6,19 @@ import dummyImage from "../../assets/dummy-image-green.jpg";
 import { FaEllipsisVertical } from "react-icons/fa6";
 import { IoMdSend } from "react-icons/io";
 import { MdOutlineMenuOpen, MdOutlineAttachFile } from "react-icons/md";
+import { useSelector } from "react-redux";
+import CircularLoader from "../common/CircularLoader";
+import { USER_ID } from "../../services/core-providers-di";
+import { sendMessage } from "../../services/chatRepository";
+import NewMessageLoader from "../common/NewMessageLoader";
 
-const messages = [
-  { isSender: true, content: "Hello there!" },
-  { isSender: false, content: "Hi! How are you?" },
-  { isSender: true, content: "I'm doing well, thanks!" },
-  { isSender: false, content: "That's great to hear!" },
-  { isSender: true, content: "What have you been up to?" },
-  { isSender: false, content: "Just working on some projects. How about you?" },
-  { isSender: true, content: "I've been busy too, lots of meetings." },
-  {
-    isSender: false,
-    content: "Ah, the usual work stuff. Anything exciting happening?",
-  },
-  { isSender: true, content: "Not much, just trying to stay productive." },
-  { isSender: true, content: "Hello there!" },
-  { isSender: false, content: "Hi! How are you?" },
-  { isSender: true, content: "I'm doing well, thanks!" },
-  { isSender: false, content: "That's great to hear!" },
-  { isSender: true, content: "What have you been up to?" },
-  { isSender: false, content: "Just working on some projects. How about you?" },
-  { isSender: true, content: "I've been busy too, lots of meetings." },
-  {
-    isSender: false,
-    content: "Ah, the usual work stuff. Anything exciting happening?",
-  },
-  { isSender: true, content: "Not much, just trying to stay productive." },
-  { isSender: true, content: "Hello there!" },
-  { isSender: false, content: "Hi! How are you?" },
-  { isSender: true, content: "I'm doing well, thanks!" },
-  { isSender: false, content: "That's great to hear!" },
-  { isSender: true, content: "What have you been up to?" },
-  { isSender: false, content: "Just working on some projects. How about you?" },
-  { isSender: true, content: "I've been busy too, lots of meetings." },
-  {
-    isSender: false,
-    content: "Ah, the usual work stuff. Anything exciting happening?",
-  },
-  { isSender: false, type: "image", imagePath: dummyImage },
-
-  { isSender: true, content: "Not much, just trying to stay productive." },
-];
 
 const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
+  const room_id = useSelector((state) => state.chats.room_id)
+  const messages = useSelector((state) => {
+    const roomId = state.chats.room_id;
+    return state.chats[roomId]
+  })
   const scrollContainerRef = useRef(null);
   const [chatInput, setChatInput] = useState("");
 
@@ -58,6 +28,20 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
         scrollContainerRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const handleSendMessage = () => {
+    if(chatInput.trim() !== '') {
+      const messageData = {
+        room_id,
+        message_data: chatInput,
+        user_id: USER_ID,
+        reply_to: 'None',
+        created_at: Date.now()
+      }
+      sendMessage(messageData);
+      setChatInput('');
+    }
+  }
   
 
   return (
@@ -88,16 +72,31 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
           <FaEllipsisVertical className="w-4 md:w-8 h-6 md:h-8 " />
         </div>
       </div>
-
+   
       <section
         ref={scrollContainerRef}
-        className="h-[80%] flex-grow overflow-y-auto bg-white px-2"
+        className="relative h-[80%] flex-grow overflow-y-auto bg-white px-2"
       >
-        <div className="flex flex-col space-y-2 justify-end">
-          {messages.map((message, index) => (
-            <ChatMessage key={index} message={message} />
-          ))}
-        </div>
+        {
+          messages?.isLoading ? (
+            <CircularLoader />
+          ) : messages?.isError ? (
+            <p>{messages?.error}</p>
+          ) : (
+            <div className="flex flex-col space-y-2 justify-end">
+              {messages?.messages.map((message, index) => (
+                <ChatMessage key={index} message={message} />
+              ))}
+
+              {
+                messages?.isSendingMessage && (
+                  <NewMessageLoader />
+                )
+              }
+            </div>
+          )
+        }
+
       </section>
 
       <div className="relative flex items-center p-4 bg-white">
@@ -106,10 +105,11 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
           placeholder="Type here ..."
           value={chatInput}
           onChange={(e) => setChatInput(e.target.value)}
+          onKeyDown={(e) => {if(e.key === 'Enter'){handleSendMessage()}}}
           className="w-full rounded-lg border border-gray-300 px-4 py-2"
         />
         <MdOutlineAttachFile className="absolute  text-gray-500 hover:text-gray-700 pt-1 right-32 h-10 w-6 cursor-pointer transform rotate-12 origin-center" />
-        <button className="ml-2 rounded-lg bg-blue-500 px-4 py-2 text-white inline-flex items-center">
+        <button onClick={handleSendMessage} className="ml-2 rounded-lg bg-blue-500 px-4 py-2 text-white inline-flex items-center">
           <span>Send</span>
           <IoMdSend className="ml-2 text-white" />
         </button>

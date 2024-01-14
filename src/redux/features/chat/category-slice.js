@@ -4,6 +4,22 @@ import { createSlice } from "@reduxjs/toolkit"
 const _initialState = {
     server_id : null
 }   
+const handleApiResult = (state, action) => {
+    const data = action.payload.data;
+    let server_id = action.payload.server_id;
+  
+    if (data.status == 'success') {
+        state[server_id].isLoading = false;
+        state[server_id].success = true;
+        state[server_id].isError = false;
+        state[server_id].error = '';
+    } else {
+        state[server_id].isLoading = false;
+        state[server_id].success = false;
+        state[server_id].isError = true;
+        state[server_id].error = data.data;
+    }
+  };
 
 export const categorySlice = createSlice({
     name: 'categories',
@@ -16,19 +32,12 @@ export const categorySlice = createSlice({
             if(!state.hasOwnProperty(server_id)){
                 state[server_id] = {}
             }
+            handleApiResult(state, action)
 
             if (data.status == 'success') {
-                state[server_id].isLoading = false;
-                state[server_id].success = true;
                 state[server_id].categories = data.data;
-                state[server_id].isError = false;
-                state[server_id].error = '';
             } else {
-                state[server_id].isLoading = false;
-                state[server_id].success = false;
                 state[server_id].categories = [];
-                state[server_id].isError = true;
-                state[server_id].error = data.data;
             }
         },
         addCategory(state, action) {
@@ -39,25 +48,28 @@ export const categorySlice = createSlice({
             if(!server_id){
                 return;
             }
-
+            handleApiResult(state,action)
             if (data.status == 'success') {
-                state[server_id].isLoading = false;
-                state[server_id].success = true;
                 state[server_id].categories.push({
                     name: newCategory.name,
                     id: data.inserted_id
                 })
-                state[server_id].isError = false;
-                state[server_id].error = '';
             } else {
-                state[server_id].isLoading = false;
-                state[server_id].success = false;
-                state[server_id].isError = true;
                 state[server_id].categories = state[server_id].categories;
-                state[server_id].error = data.data;
             }
 
         },
+
+        addRoom(state, action){
+            let data = action.payload.data;
+            let category_id = action.payload.category_id;
+            let server_id = action.payload.server_id;
+
+            if(!state[server_id]){
+                state[server_id] = {}
+            }           
+            
+        },  
 
         setCategoriesProperty(state, action) {
             let propertyName = action.payload.propertyName;

@@ -6,7 +6,7 @@ export const USER_ID = 'chidiebere';
 let product;
 let org_id;
 let api_key;
-const SocketURL =  'http://www.dowellchat.uxlivinglab.online/';
+const SocketURL =  'https://www.dowellchat.uxlivinglab.online/';
 
 
 export const socketInstance = io(SocketURL);
