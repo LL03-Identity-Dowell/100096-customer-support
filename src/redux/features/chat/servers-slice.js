@@ -47,7 +47,7 @@ export const serversSlice = createSlice({
         const server_name = action.payload.name;
         state.servers.push({
           name: server_name,
-          id: "12345324523453",
+          id: data.data.inserted_id,
         });
       }
     },
