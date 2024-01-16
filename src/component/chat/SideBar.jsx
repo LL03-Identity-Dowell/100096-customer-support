@@ -10,19 +10,22 @@ import ChannelsLoading from "./loading/ChannelsLoading";
 import { IoAddSharp } from "react-icons/io5";
 import CustomContextMenu from "./CustomContextMenu";
 import { deleteServer } from "../../services/serverRepository";
-
+import { getServerCategory } from "../../services/catagoryRepository";
+import { CiCircleChevDown } from "react-icons/ci";
+import { CiCircleChevUp } from "react-icons/ci";
+import SideNav from "./SideNav";
+import { joinPublicRoom } from "../../services/chatRepository";
 
 const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRightClickedServer }) => {
   const {servers, isLoading, isError, error} = useSelector((state) => state.servers)
   const [serverName, setServeName] = useState('');
-  const server_id = useSelector((state) => state.channels.server_id);
-  const serverChannels = useSelector((state) => {
-      const serverId = state.channels.server_id;
-      return state.channels[serverId];
+  const server_id = useSelector((state) => state.categories.server_id);
+  const categoryServer = useSelector((state) => {
+      const serverId = state.categories.server_id;
+      return state.categories[serverId];
   })
   const [activeBorder, setActiveBorder] = useState(-1);
   const [contextMenuPosition, setContextMenuPosition] = useState(null);
-  // const [rightClickedServer, setRightClickedServer] = useState(null);
 
   useEffect(() => {
     const server = servers?.filter((server) => server.id == server_id)
@@ -33,7 +36,8 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
 
   const handleServerClick = (serverId, index) => {
     setActiveBorder(index)
-    getServerChannels(serverId);
+    // getServerChannels(serverId);
+    getServerCategory(serverId);
   }
 
   const handleServerDelete = () => {
@@ -55,53 +59,29 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
     });
   };
 
+  const handleJoinRoom = (room_id) => {
+    joinPublicRoom(room_id);
+  }
+
   
   return (
     <div className="flex">
-      <div className=" h-screen py-4 px-[15px]">
 
-        <div className="relative h-[40px] mb-4">
-              <FaMessage
-                onClick={() => setActiveBorder(-1)}
-                className={`cursor-pointer w-10 text-green-500 rounded-md  h-10 `}
-              />
-              {activeBorder === -1 && (
-                <p className="cursor-pointer w-[6px] h-[80%] bg-green-500 absolute left-[-15px] rounded-r-[100px]  top-[2px]"></p>
-              )}
-
-              {activeBorder === -1 && (
-                <p className="cursor-pointer w-full h-[2px] bg-[#94a3b8] absolute left-0 rounded-r-[100px]  bottom-[-7px]"></p>
-              )}              
-        </div>
-          
-        <div className="overflow-y-auto overflow-x-hidden my-2 h-[90%] flex flex-col gap-4 items-center">
-          {
-            isLoading ? (
-                <ServerButtonsShimmer />
-            ) : (
-                servers?.map(({name, id}, index) => (
-                  <button onContextMenu={(e) => handleContextMenu(e, id, name)}  className="relative h-[40px]" id={id} key={index} onClick={() => {handleServerClick(id, index)}}>
-                    <ProfileAvatar fullName={name} />
-                    {activeBorder === index && (
-                      <p className=" w-[6px] h-[80%] bg-green-500 absolute left-[-15px] rounded-r-[100px]  top-[2px]"></p>
-                    )}
-                    {activeBorder === index && (
-                      <p className=" w-full h-[2px] bg-[#94a3b8] absolute left-0 rounded-r-[100px]  bottom-[-7px]"></p>
-                    )}
-                  </button>
-                ))
-            )
-          }
-        </div>
-        
-      <IoAddSharp className="mt-auto text-white cursor-pointer w-10 h-10 z-10 rounded-lg bg-green-400" onClick={() => toggleModals('showAddServerModal',true)}/>
-      </div>
+      <SideNav 
+        activeBorder={activeBorder} 
+        handleContextMenu={handleContextMenu}
+        handleServerClick={handleServerClick}
+        isLoading={isLoading}
+        servers={servers}
+        setActiveBorder={setActiveBorder}
+        toggleModals={toggleModals}
+        />
 
       {isOpen && (
         <div className={`flex flex-col gap-4 pt-7 bg-white rounded-lg px-4 overflow-x-hidden overflow-y-auto`}>
           <div className="flex items-center justify-between">
             <h1 className="font-bold capitalize">{serverName}</h1>
-             <IoAddSharp  className="w-5 h-5 cursor-pointer" onClick={() => toggleModals('channelModal', true)}/>
+             <IoAddSharp  className="w-5 h-5 cursor-pointer" onClick={() => toggleModals('categoryModal', true)}/>
           </div>
 
           <div className="max-w-md mx-auto px-2 flex items-center bg-gray-200 rounded-sm">
@@ -114,28 +94,37 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
             <FontAwesomeIcon icon={faSearch} className="text-gray-400 pr-1" />
           </div>
           {
-            serverChannels?.isLoading ? (
+            categoryServer?.isLoading ? (
               <ChannelsLoading />
-            ) : serverChannels?.isError ? (
-              <p>{serverChannels?.error}</p>
+            ) : categoryServer?.isError ? (
+              <p>{categoryServer?.error}</p>
             ) : (
-              serverChannels?.channels?.map((item, index) => (
+              categoryServer?.categories?.map(({id, name, rooms}, index) => (
+                <div key={index} className="mb-2">
                   <button
-                    key={index}
-                    className="flex gap-3 items-center mb-2 "
-                    onClick={() => setIsOpen(false)}
+                    id={id}
+                    className="w-full flex gap-3 items-center justify-between border-2 border-black/10 p-2"
+                    onClick={() => {}}
                   >
                     <img
                       src="avatar.jpg"
-                      className="w-10 h-10 rounded-full mb-4 bg-yellow-500"
+                      className="w-10 h-10 rounded-full bg-yellow-500"
                       alt={`User ${index}`}
                     />
-                    <div className="text-left">
-                      <p className="text-sm font-semibold">{item} </p>
-                      <p className="text-sm font-semibold my-0.5">cb1be95</p>
-                      <p className="text-xs font-semibold">WORKFLOWAI </p>
-                    </div>
+                    <p className="text-left text-sm font-semibold">{name} </p>
+                    <CiCircleChevDown className="text-black font-bold w-10"/>
                   </button>
+
+                  <div className="pl-2 flex flex-col items-center space-y-2" >
+                      {
+                        rooms?.map((id, index) => (
+                          <button key={index} className="text-lg p-2 shadow-lg bg-slate-300" onClick={() => {handleJoinRoom(id)}}>
+                            <span>{id}</span>
+                          </button>
+                        ))
+                      }
+                  </div>
+                </div>
               ))
             )
 

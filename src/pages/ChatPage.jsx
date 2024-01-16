@@ -11,15 +11,19 @@ import { useSelector } from "react-redux";
 import CreateChannelForm from "../component/chat/forms/CreateChannelForm";
 import { watchChannels } from "../services/channelRepository";
 import EditServerForm from "../component/chat/forms/EditServerForm";
+import { watchCategory } from "../services/catagoryRepository";
+import CreateCategoryForm from "../component/chat/forms/CreateCategoryForm";
+import { createPublicRoom, watchChats } from "../services/chatRepository";
 
-const ChatPage = () => {
+const ChatPage = ({publicLinkId = 'ab62f07f', categoryId = '65a3db38c5b56cc2cab64e91'}) => {
     const [isOpen, setIsOpen] = useState(true);
     const isConnected  = useSelector((state) => state.socket.isConnected)
     const dispatch = useDispatch();
     const [modals, setModals] = useState({
       showAddServerModal: false,
       channelModal: false,
-      editServerModal: false
+      editServerModal: false,
+      categoryModal: false
     });
     const [rightClickedServer, setRightClickedServer] = useState(null);
   
@@ -42,13 +46,22 @@ const ChatPage = () => {
     }, [])
 
     useEffect(() => {
-      if(isConnected) {
+      // if(isConnected) {
         watchServers();
-        watchChannels();
         getUserServers();
-      }
-    }, [isConnected])
+        watchChannels();
+        watchCategory();
+        watchChats();
+      // }
 
+      // if(isConnected && publicLinkId && categoryId){
+      //   createPublicRoom({
+      //     public_link_id: publicLinkId,
+      //     category_id: categoryId,
+      //     created_at: Date.now()
+      //   })
+      // }
+    }, [isConnected])
 
     const toggleModals = (modalName, value) => {
       if(value !== undefined){
@@ -103,6 +116,14 @@ const ChatPage = () => {
           <PopupModal toggleModals={toggleModals} modalName='editServerModal'>
             <EditServerForm toggleModals={toggleModals} rightClickedServer={rightClickedServer}/>
           </PopupModal>
+          )
+        }
+
+        {
+          modals.categoryModal && (
+            <PopupModal toggleModals={toggleModals} modalName='categoryModal'>
+              <CreateCategoryForm toggleModals={toggleModals}/>
+            </PopupModal>
           )
         }
       </div>
