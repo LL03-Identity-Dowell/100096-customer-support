@@ -44,7 +44,7 @@ export const chatSlice = createSlice({
                 if (typeof data.data == 'string') {
                     state[room_id].messages = [] 
                 } else {
-                    state[room_id].messages.push(data.data)
+                    state[room_id].messages = data.data
                 }
             }
         },
@@ -75,7 +75,7 @@ export const chatSlice = createSlice({
             
             if(data.status == 'success') {
                 state[room_id]?.messages.push(message)
-                state[room_id]['isSendingMessage'] = value;
+                state[room_id].isSendingMessage = value;
             }
         }
     }

@@ -45,7 +45,7 @@ export const watchChats = () => {
     socketInstance.on('public_message_response', (data) => {
         console.log('public_message_response', data)
         // join a room
-        if(data?.operation === 'send_message') {
+        if(data?.operation === 'join_public_room') {
             store.dispatch(setChats({
                 data, 
                 room_id: roomId
