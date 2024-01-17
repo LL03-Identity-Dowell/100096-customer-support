@@ -49,11 +49,11 @@ const ChatPage = ({publicLinkId = 'ab62f07f', categoryId = '65a3db38c5b56cc2cab6
       // if(isConnected) {
         watchServers();
         getUserServers();
-        createPublicRoom({
-          category_id: "65a757c1c5b56cc2cab6ba3d",
-          public_link_id: "ab62f07f",
-          created_at: Date.now()
-        })
+        // createPublicRoom({
+        //   category_id: "65a757c1c5b56cc2cab6ba3d",
+        //   public_link_id: "ab62f07f",
+        //   created_at: Date.now()
+        // })
         watchChannels();
         watchCategory();
         watchChats();
