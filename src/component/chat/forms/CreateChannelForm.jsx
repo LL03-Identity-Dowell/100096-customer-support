@@ -128,6 +128,7 @@ const CreateChannelForm = ({toggleModals}) => {
                 </label>
                 
                 <button type="submit" 
+                    disabled={isSubmitted}
                     className={`py-2 px-5 my-6 inline-block tracking-wide border align-middle duration-500 text-base text-center rounded-md w-full 
                     ${false ? 'bg-gray-300' : 'bg-[#0B141F] text-white hover:bg-transparent hover:text-[#0B141F] dark:bg-[#E9E9E9] dark:text-black dark:hover:bg-transparent dark:hover:text-[#E9E9E9]'}`}>
                     Submit

@@ -75,25 +75,28 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
    
       <section
         ref={scrollContainerRef}
-        className="relative h-[80%] flex-grow overflow-y-auto bg-white px-2"
+        className="relative h-[80%] flex-grow overflow-y-auto bg-white px-2 "
       >
         {
           messages?.isLoading ? (
             <CircularLoader />
           ) : messages?.isError ? (
             <p>{messages?.error}</p>
+          ) : !room_id ? (
+            <p className="text-3xl font-light text-center h-full flex items-center justify-center">
+              Please Select a room to chat in!
+            </p>
           ) : (
-            <div className="flex flex-col space-y-2 justify-end">
+            <div className="flex flex-col space-y-2 h-full justify-end mt-auto">
               {messages?.messages.map((message, index) => (
                 <ChatMessage key={index} message={message} />
               ))}
-
               {
                 messages?.isSendingMessage && (
                   <NewMessageLoader />
                 )
               }
-            </div>
+            </div>  
           )
         }
 
@@ -105,15 +108,21 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
           placeholder="Type here ..."
           value={chatInput}
           onChange={(e) => setChatInput(e.target.value)}
-          onKeyDown={(e) => {if(e.key === 'Enter'){handleSendMessage()}}}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2"
+          onKeyDown={(e) => { if (e.key === 'Enter') { handleSendMessage() } }}
+          className={`w-full rounded-lg border border-gray-300 px-4 py-2 ${room_id === null ? 'cursor-not-allowed' : ''}`}
+          disabled={room_id === null}
         />
-        <MdOutlineAttachFile className="absolute  text-gray-500 hover:text-gray-700 pt-1 right-32 h-10 w-6 cursor-pointer transform rotate-12 origin-center" />
-        <button onClick={handleSendMessage} className="ml-2 rounded-lg bg-blue-500 px-4 py-2 text-white inline-flex items-center">
+        <MdOutlineAttachFile className={`absolute text-gray-500 hover:text-gray-700 pt-1 right-32 h-10 w-6 cursor-pointer transform rotate-12 origin-center ${room_id === null ? 'cursor-not-allowed' : ''}`} />
+        <button
+          onClick={handleSendMessage}
+          className={`ml-2 rounded-lg bg-blue-500 px-4 py-2 text-white inline-flex items-center ${room_id === null ? 'cursor-not-allowed' : ''}`}
+          disabled={room_id === null}
+        >
           <span>Send</span>
           <IoMdSend className="ml-2 text-white" />
         </button>
       </div>
+
     </div>
   );
 };

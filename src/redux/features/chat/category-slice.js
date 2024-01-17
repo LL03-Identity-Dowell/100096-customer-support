@@ -6,8 +6,7 @@ const _initialState = {
 }   
 const handleApiResult = (state, action) => {
     const data = action.payload.data;
-    let server_id = action.payload.server_id;
-  
+    let server_id = state.server_id;
     if (data.status == 'success') {
         state[server_id].isLoading = false;
         state[server_id].success = true;

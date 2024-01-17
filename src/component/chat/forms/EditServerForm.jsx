@@ -30,7 +30,7 @@ const EditServerForm = ({toggleModals, rightClickedServer}) => {
             channels: [],
             events: [],
             owner: USER_ID,
-            server_id: rightClickedServer?.id || null,
+            server_id: rightClickedServer.id,
             created_at: Date.now()
         }
         editServer(data);
@@ -63,10 +63,19 @@ const EditServerForm = ({toggleModals, rightClickedServer}) => {
                     error={errors.name?.message}
                 />
                 
-                <button type="submit" 
+                <button
+                    type="submit"
+                    disabled={isSubmitted}
                     className={`py-2 px-5 my-6 inline-block tracking-wide border align-middle duration-500 text-base text-center rounded-md w-full 
-                    ${false ? 'bg-gray-300' : 'bg-[#0B141F] text-white hover:bg-transparent hover:text-[#0B141F] dark:bg-[#E9E9E9] dark:text-black dark:hover:bg-transparent dark:hover:text-[#E9E9E9]'}`}>
-                    Submit
+                        ${isSubmitted ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#0B141F] text-white hover:bg-transparent hover:text-[#0B141F] dark:bg-[#E9E9E9] dark:text-black dark:hover:bg-transparent dark:hover:text-[#E9E9E9]'}`}
+                    >
+                    {isSubmitted ? (
+                        <div className="flex justify-center items-center">
+                        <div className="animate-spin h-5 w-5 border-t-2 border-[#0B141F] rounded-full"></div>
+                        </div>
+                    ) : (
+                        'Submit'
+                    )}
                 </button>
             </form>
         </div>

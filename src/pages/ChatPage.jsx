@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ChatSection from "../component/chat/ChatSection";
 import SideBar from "../component/chat/SideBar";
-import { socketInstance } from "../services/core-providers-di";
+import { cleanupSocket, socketInstance } from "../services/core-providers-di";
 import { useDispatch } from "react-redux";
 import { socketSlice } from "../redux/features/chat/socket-slice";
 import PopupModal from "../component/common/PopupModal";
@@ -31,24 +31,29 @@ const ChatPage = ({publicLinkId = 'ab62f07f', categoryId = '65a3db38c5b56cc2cab6
       setIsOpen(!isOpen);
     };
   
-    useEffect(() => {
-      socketInstance.on('connect', () => {
-        dispatch(socketSlice.actions.setConnected({
-          isConnected: true,
-        }))
-      })
+    // useEffect(() => {
+    //   socketInstance.on('connect', () => {
+    //     dispatch(socketSlice.actions.setConnected({
+    //       isConnected: true,
+    //     }))
+    //   })
   
-      socketInstance.on('disconnect', () => {
-        dispatch(socketSlice.actions.setConnected({
-          isConnected: false,
-        }))
-      })
-    }, [])
+    //   socketInstance.on('disconnect', () => {
+    //     dispatch(socketSlice.actions.setConnected({
+    //       isConnected: false,
+    //     }))
+    //   })
+    // }, [])
 
     useEffect(() => {
       // if(isConnected) {
         watchServers();
         getUserServers();
+        createPublicRoom({
+          category_id: "65a757c1c5b56cc2cab6ba3d",
+          public_link_id: "ab62f07f",
+          created_at: Date.now()
+        })
         watchChannels();
         watchCategory();
         watchChats();
@@ -61,7 +66,11 @@ const ChatPage = ({publicLinkId = 'ab62f07f', categoryId = '65a3db38c5b56cc2cab6
       //     created_at: Date.now()
       //   })
       // }
-    }, [isConnected])
+
+      return () => {
+        cleanupSocket();
+      };
+    }, [])
 
     const toggleModals = (modalName, value) => {
       if(value !== undefined){

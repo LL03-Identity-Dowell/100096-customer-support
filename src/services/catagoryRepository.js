@@ -32,7 +32,7 @@ export const createCategory = (categoryData) => {
 export const watchCategory = () => {
 
     socketInstance.on('category_response', (data) => {
-        // console.log('category_response', data)
+        console.log('category_response', data)
         if(data.operation == 'get_server_category'){
             store.dispatch(setCategories({
                 data,

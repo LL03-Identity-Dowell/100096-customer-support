@@ -2,24 +2,34 @@ import {io} from 'socket.io-client'
 import axios from 'axios';
 // const SocketURL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:4000';
 
-export const USER_ID = 'chidiebere';
+export let USER_ID;
 let product;
 let org_id;
 let api_key;
 const SocketURL =  'https://www.dowellchat.uxlivinglab.online/';
 
-
 export const socketInstance = io(SocketURL);
+
+
+export const cleanupSocket = () => {
+    socketInstance.off('server_response');
+    socketInstance.off('category_response');
+    socketInstance.off('channel_response');
+    socketInstance.off('public_room_response');
+    socketInstance.off('public_message_response');
+}
 
 export const getAuthReq = async () => {
     product = 'customer_support';
     org_id = getOrgId();
     api_key = await getApiKey(org_id);
+    USER_ID = getUserId();
 
     return {
         product,
         org_id,
-        api_key
+        api_key,
+        USER_ID
     }
 }
 
@@ -28,7 +38,8 @@ export const addCommonProps = (payload) => {
         ...payload,
         workspace_id: org_id,
         api_key,
-        product
+        product,
+        user_id: USER_ID
     };
 }
 
@@ -51,4 +62,10 @@ const getApiKey = async (workspace_id) => {
     })
 
     return api_key;
+}
+
+const getUserId = () => {
+    const currUser = JSON.parse(sessionStorage.getItem('cust-user'));
+    const user_id = currUser['userinfo'].userID;
+    return user_id;
 }

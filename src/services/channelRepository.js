@@ -24,6 +24,7 @@ export const createChannel = (channelData) => {
 
 export const watchChannels = () => {
     socketInstance.on('channel_response', (data) => {
+        // console.log('channel_response', data)
         if(data.operation === 'get_server_channels'){
             store.dispatch(setServerChannels({
                 data,

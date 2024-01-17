@@ -26,8 +26,8 @@ export function deleteServer(serverId) {
     socketInstance.emit('delete_server', addCommonProps({ server_id: serverId }));
 }
 
-export function editServer(data, serverId) {
-    rightClickedServerId = serverId;
+export function editServer(data) {
+    rightClickedServerId = data.server_id;
     updatedServerName = data.name;
     store.dispatch(setSuccess(false));
     socketInstance.emit('update_server', addCommonProps(data))
@@ -35,7 +35,7 @@ export function editServer(data, serverId) {
 
 export function watchServers () {
     socketInstance.on('server_response', (data) => {
-        // console.log("server_response", data)
+        console.log("server_response", data)
         if(data.operation === 'get_user_servers'){
             store.dispatch(setServers(data))
         }else if(data.operation === 'create_server') {

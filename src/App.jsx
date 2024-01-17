@@ -13,9 +13,8 @@ export default function App() {
   useEffect(() => {
     const getReq = async () => {
       if(loggedIn){
-        console.log('loggedIn',loggedIn)
-        const {product, api_key, org_id} = await getAuthReq();
-        console.log("api_key", api_key)
+        const {product, api_key, org_id, USER_ID} = await getAuthReq();
+        console.log("api_key", api_key, 'userId', USER_ID)
         setFetchFinished(true);
      }
     }
