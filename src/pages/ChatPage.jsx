@@ -15,7 +15,7 @@ import { watchCategory } from "../services/catagoryRepository";
 import CreateCategoryForm from "../component/chat/forms/CreateCategoryForm";
 import { createPublicRoom, watchChats } from "../services/chatRepository";
 
-const ChatPage = ({publicLinkId = 'ab62f07f', categoryId = '65a3db38c5b56cc2cab64e91'}) => {
+const ChatPage = () => {
     const [isOpen, setIsOpen] = useState(true);
     const isConnected  = useSelector((state) => state.socket.isConnected)
     const dispatch = useDispatch();
@@ -46,7 +46,6 @@ const ChatPage = ({publicLinkId = 'ab62f07f', categoryId = '65a3db38c5b56cc2cab6
     // }, [])
 
     useEffect(() => {
-      // if(isConnected) {
         watchServers();
         getUserServers();
         // createPublicRoom({
@@ -57,15 +56,6 @@ const ChatPage = ({publicLinkId = 'ab62f07f', categoryId = '65a3db38c5b56cc2cab6
         watchChannels();
         watchCategory();
         watchChats();
-      // }
-
-      // if(isConnected && publicLinkId && categoryId){
-      //   createPublicRoom({
-      //     public_link_id: publicLinkId,
-      //     category_id: categoryId,
-      //     created_at: Date.now()
-      //   })
-      // }
 
       return () => {
         cleanupSocket();

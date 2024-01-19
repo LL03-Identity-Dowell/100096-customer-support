@@ -48,7 +48,7 @@ export const watchChats = () => {
                 data, 
                 room_id: roomId
             }))
-        } else {
+        } else if(data?.operation === 'send_message'){
             store.dispatch(addMessage({
                 data,
                 newMessage
