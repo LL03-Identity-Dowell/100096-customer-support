@@ -11,9 +11,10 @@ import CircularLoader from "../common/CircularLoader";
 import { USER_ID } from "../../services/core-providers-di";
 import { sendMessage } from "../../services/chatRepository";
 import NewMessageLoader from "../common/NewMessageLoader";
+import { FaStaylinked } from "react-icons/fa";
 
 
-const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
+const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle, toggleModals }) => {
   const room_id = useSelector((state) => state.chats.room_id)
   const messages = useSelector((state) => {
     const roomId = state.chats.room_id;
@@ -67,6 +68,7 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
         </div>
 
         <div className="flex items-center space-x-3 md:space-x-4 lg:space-x-6">
+          {/* <FaStaylinked onClick={() => toggleModals('masterLinkView', true)} className="w-6 md:w-10 h-10 text-xl cursor-pointer"/> */}
           <MdVideoCall className="w-6 md:w-10 h-10 text-xl" />
           <IoCall className="w-4 md:w-8  h-8 text-xl" />
           <FaEllipsisVertical className="w-4 md:w-8 h-6 md:h-8 " />

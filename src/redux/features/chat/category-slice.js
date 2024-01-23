@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit"
 
 
 const _initialState = {
-    server_id : null
+    server_id : null,
+    category_id: null
 }   
 const handleApiResult = (state, action) => {
     const data = action.payload.data;
@@ -87,10 +88,15 @@ export const categorySlice = createSlice({
         setCategoriesServerId(state, action){
             let server_id = action.payload.server_id;
             state.server_id = server_id;
+        },
+
+        setCategoryId(state, action){
+            let category_id = action.payload.category_id;
+            state.category_id = category_id;
         }
     }
 })
 
 
-export const {setCategories, setCategoriesProperty, setCategoriesServerId, addCategory} = categorySlice.actions;
+export const {setCategories, setCategoriesProperty, setCategoriesServerId, addCategory, setCategoryId} = categorySlice.actions;
 export default categorySlice.reducer;

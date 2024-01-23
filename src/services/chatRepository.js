@@ -13,6 +13,12 @@ export const createPublicRoom = (data) => {
     )
 }
 
+export const createMasterLink = (data) => {
+    socketInstance.emit('create_master_link', addCommonProps({
+        ...data
+    }))
+}
+
 export const joinPublicRoom = (room_id) => {
     store.dispatch(setChatProperty({
         propertyName: 'isLoading',

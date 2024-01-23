@@ -1,8 +1,8 @@
-import { FaMessage } from "react-icons/fa6";
+import { FaMessage, FaStaylinked } from "react-icons/fa6";
 import { faL, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProfileAvatar from "../common/ProfileAvatar";
 import ServerButtonsShimmer from "./loading/ServersLoading";
 import { getServerChannels } from "../../services/channelRepository";
@@ -15,10 +15,12 @@ import { CiCircleChevDown } from "react-icons/ci";
 import { CiCircleChevUp } from "react-icons/ci";
 import SideNav from "./SideNav";
 import { joinPublicRoom } from "../../services/chatRepository";
+import { setCategoryId } from "../../redux/features/chat/category-slice";
 
 const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRightClickedServer }) => {
   const {servers, isLoading, isError, error} = useSelector((state) => state.servers)
   const [serverName, setServeName] = useState('');
+  const dispatch = useDispatch()
   const server_id = useSelector((state) => state.categories.server_id);
   const categoryServer = useSelector((state) => {
       const serverId = state.categories.server_id;
@@ -63,6 +65,12 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
     joinPublicRoom(room_id);
   }
 
+  const handleMasterLink = (id) => {
+    toggleModals('createMasterLink', true); 
+    dispatch(setCategoryId({
+      category_id: id
+    }))
+  }
   
   return (
     <div className="flex">
@@ -99,12 +107,11 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
             ) : categoryServer?.isError ? (
               <p>{categoryServer?.error}</p>
             ) : (
-              categoryServer?.categories?.map(({id, name, rooms}, index) => (
+              categoryServer?.categories?.map(({_id: category_id, name, rooms}, index) => (
                 <div key={index} className="mb-2">
-                  <button
-                    id={id}
+                  <div
+                    id={category_id}
                     className="w-full flex gap-3 items-center justify-between border-2 border-black/10 p-2"
-                    onClick={() => {}}
                   >
                     <img
                       src="avatar.jpg"
@@ -113,7 +120,8 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
                     />
                     <p className="text-left text-sm font-semibold">{name} </p>
                     <CiCircleChevDown className="text-black font-bold w-10"/>
-                  </button>
+                    <FaStaylinked onClick={() => handleMasterLink(category_id)} className="w-6 cursor-pointer"/>
+                  </div>
 
                   <div className="pl-2 flex flex-col items-center space-y-2" >
                       {

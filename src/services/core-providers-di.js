@@ -1,11 +1,14 @@
 import {io} from 'socket.io-client'
 import axios from 'axios';
+import { store } from '../redux/store';
+import { setUserProperty } from '../redux/features/auth/user-slice';
 // const SocketURL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:4000';
 
 export let USER_ID;
 let product;
 let org_id;
 let api_key;
+let usernames;
 const SocketURL =  'https://www.dowellchat.uxlivinglab.online/';
 
 export const socketInstance = io(SocketURL);
@@ -24,6 +27,7 @@ export const getAuthReq = async () => {
     org_id = getOrgId();
     api_key = await getApiKey(org_id);
     USER_ID = getUserId();
+    usernames = await getUsernames()
 
     return {
         product,
@@ -31,6 +35,20 @@ export const getAuthReq = async () => {
         api_key,
         USER_ID
     }
+}
+
+export const generatePublicLinks = (usernames, count, category_id) => {
+    let public_links = []
+    const baseurl = 'https://ll03-identity-dowell.github.io/100096-customer-support/?'
+    let shuffledIds = [...usernames].sort(() => Math.random() - 0.5);
+    shuffledIds = shuffledIds.slice(0, count);
+
+    shuffledIds.forEach(username => {
+        let curr = `${baseurl}type=pulic_chat&public_link_id=${username}&org_id=${org_id}&category_id=${category_id}&product=${product}`;
+        public_links.push(curr)
+    });
+
+    return public_links;
 }
 
 export const addCommonProps = (payload) => {
@@ -69,3 +87,38 @@ const getUserId = () => {
     const user_id = currUser['userinfo'].userID;
     return user_id;
 }
+
+
+const getUsernames = async () => {
+    let currUser;
+    let usernames = [];
+    await axios
+    .post("https://100093.pythonanywhere.com/api/userinfo/", {
+      session_id: "usgu9m5zsjdg9xwp8jmzbdkqy4jvd0m0",
+    })
+    .then((response) => {
+      console.log(response.data);
+      const filteredUserportfolio =
+        response.data.selected_product.userportfolio.filter(
+          (portfolio) =>
+            portfolio.product === "Dowell Customer Support Centre" &&
+            portfolio.member_type === "public"
+        );
+      currUser = filteredUserportfolio;
+      filteredUserportfolio.map((portfolio) => {
+        usernames.push(...portfolio.username);
+      })
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
+    
+    store.dispatch(setUserProperty({
+        propertyName: 'usernames',
+        value: usernames
+    }))
+
+    return usernames;
+}
+

@@ -14,6 +14,8 @@ import EditServerForm from "../component/chat/forms/EditServerForm";
 import { watchCategory } from "../services/catagoryRepository";
 import CreateCategoryForm from "../component/chat/forms/CreateCategoryForm";
 import { createPublicRoom, watchChats } from "../services/chatRepository";
+import MasterLinkView from "../component/chat/forms/MasterLinkPopup";
+import CreateMasterLink from "../component/chat/forms/CreateMasterLink";
 
 const ChatPage = () => {
     const [isOpen, setIsOpen] = useState(true);
@@ -23,7 +25,9 @@ const ChatPage = () => {
       showAddServerModal: false,
       channelModal: false,
       editServerModal: false,
-      categoryModal: false
+      categoryModal: false,
+      masterLinkView: false,
+      createMasterLink: false,
     });
     const [rightClickedServer, setRightClickedServer] = useState(null);
   
@@ -89,6 +93,7 @@ const ChatPage = () => {
           rightClickedServer={rightClickedServer}
         />
         <ChatSection
+          toggleModals={toggleModals}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           handleSideBarToggle={handleSideBarToggle}
@@ -122,6 +127,21 @@ const ChatPage = () => {
           modals.categoryModal && (
             <PopupModal toggleModals={toggleModals} modalName='categoryModal'>
               <CreateCategoryForm toggleModals={toggleModals}/>
+            </PopupModal>
+          )
+        }
+
+        {
+          modals.masterLinkView && (
+            <PopupModal toggleModals={toggleModals} modalName='masterLinkView'>
+              <MasterLinkView toggleModals={toggleModals}/>
+            </PopupModal>
+          )
+        }
+        {
+          modals.createMasterLink && (
+            <PopupModal toggleModals={toggleModals} modalName='createMasterLink'>
+              <CreateMasterLink toggleModals={toggleModals}/>
             </PopupModal>
           )
         }
