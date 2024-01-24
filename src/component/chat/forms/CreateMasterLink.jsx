@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {useForm, Controller} from 'react-hook-form';
 import { generatePublicLinks } from "../../../services/core-providers-di";
-import { createMasterLink } from "../../../services/chatRepository";
+import { createMasterLink } from "../../../services/masterLinkRepository";
 
 const CreateMasterLink = ({toggleModals}) => {
 
+    const {success, isError, error} = useSelector((state) => state.masterlink)
     const user = useSelector((state) => state.user);
     const category_id = useSelector((state) => state.categories.category_id)
     
@@ -23,13 +24,19 @@ const CreateMasterLink = ({toggleModals}) => {
         })
     }
 
+    useEffect(() => {
+        if(success && isSubmitted) {
+            toggleModals('createMasterLink', false);
+        }
+    }, [isSubmitted, success])
+
     return (
         <div className="py-3 px-3 lg:px-8 bg-white dark:bg-[#080F18] shadow-lg dark:shadow-gray-800 rounded-md w-full">
-        {/* {
+        {
             isError && (
                 <p className="mt-2 text-xs text-red-600 dark:text-red-500">{error}</p>
             )
-        } */}
+        }
         <h5 className='mt-6 text-xl font-semibold text-black dark:text-white'>Create Master Links</h5>
         <p className='dark:text-gray-100 text-slate-400 mb-4 text-xs'>Please select public links to create master links from.</p>
 

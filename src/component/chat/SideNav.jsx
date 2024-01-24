@@ -2,6 +2,7 @@ import { IoAddSharp } from "react-icons/io5";
 import ServerButtonsShimmer from "./loading/ServersLoading";
 import { FaMessage } from "react-icons/fa6";
 import ProfileAvatar from "../common/ProfileAvatar";
+import { IoMdSettings } from "react-icons/io";
 
 
 const SideNav = ({handleContextMenu, handleServerClick, setActiveBorder, activeBorder, isLoading, servers, toggleModals}) => {
@@ -23,7 +24,7 @@ const SideNav = ({handleContextMenu, handleServerClick, setActiveBorder, activeB
               )}              
         </div>
           
-        <div className="overflow-y-auto overflow-x-hidden my-2 h-[90%] flex flex-col gap-4 items-center">
+        <div className="overflow-y-auto overflow-x-hidden my-2 h-[80%] flex flex-col gap-4 items-center ">
           {
             isLoading ? (
                 <ServerButtonsShimmer />
@@ -42,8 +43,11 @@ const SideNav = ({handleContextMenu, handleServerClick, setActiveBorder, activeB
             )
           }
         </div>
-        
-      <IoAddSharp className="mt-auto text-white cursor-pointer w-10 h-10 z-10 rounded-lg bg-green-400" onClick={() => toggleModals('showAddServerModal',true)}/>
+        <div className="h-[13%] overflow-y-hidden flex flex-col items-end justify-end">
+          <IoMdSettings className=" mb-4 text-white cursor-pointer w-10 h-10 z-10 rounded-lg bg-blue-400" onClick={() => toggleModals('masterLinkView', true)}/>
+          <IoAddSharp className=" text-white cursor-pointer w-10 h-10 z-10 rounded-lg bg-green-400" onClick={() => toggleModals('showAddServerModal',true)}/>
+        </div>
+     
       </div>
     )
 }

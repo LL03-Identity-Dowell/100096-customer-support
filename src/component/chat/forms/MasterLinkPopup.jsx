@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const MasterLinkView = ({toggleModals}) => {
 
-    const user = useSelector((state) => state.user);
+    const masterlink = useSelector((state) => state.masterlink);
     const [links, setLinks] = useState([]);
     const handleCopyClick = (index) => {
         const linkToCopy = links[index];
@@ -12,15 +12,11 @@ const MasterLinkView = ({toggleModals}) => {
       };
     
     useEffect(() => {
-        if(user && user.public_links){
-            setLinks(user.public_links)
+        if(masterlink && masterlink.masterLinks){
+            setLinks(masterlink.masterLinks)
         }
-    }, [user, user?.public_links])
-    console.log("user", user)
+    }, [masterlink, masterlink?.masterLinks])
 
-    const handleCreateMasterLink = () => {
-
-    }
 
     return (
         <div className="py-3 px-3 lg:px-8 bg-[#080F18] text-white shadow-lg shadow-gray-800 rounded-md w-full">
@@ -28,7 +24,7 @@ const MasterLinkView = ({toggleModals}) => {
             <h5 className='mt-6 text-xl font-semibold text-black dark:text-white'>List of Master Links</h5>
             <p className='dark:text-gray-100 text-slate-400 mb-4 text-xs'>This are a list of master links available for this channel, share them and help our customers! </p>
             {
-                user?.public_links.map((link, index) => (
+                masterlink?.masterLinks.map((link, index) => (
                     <li key={index} className="flex items-center space-x-2">
                         <span className="flex-grow">{link}</span>
                         <button
@@ -41,12 +37,12 @@ const MasterLinkView = ({toggleModals}) => {
                   </li>
                 ))
             }                
-            <button type="submit" 
+            {/* <button type="submit" 
                 onClick={() => toggleModals('createMasterLink', true)}
                 className={`py-2 px-5 my-6 inline-block tracking-wide border align-middle duration-500 text-base text-center rounded-md w-full 
                 ${false ? 'bg-gray-300' : 'bg-[#0B141F] text-white hover:bg-transparent hover:text-[#0B141F] dark:bg-[#E9E9E9] dark:text-black dark:hover:bg-transparent dark:hover:text-[#E9E9E9]'}`}>
                 Create New Masterlink
-            </button>
+            </button> */}
         </div>
     );
 }

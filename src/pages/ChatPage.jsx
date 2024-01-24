@@ -16,6 +16,7 @@ import CreateCategoryForm from "../component/chat/forms/CreateCategoryForm";
 import { createPublicRoom, watchChats } from "../services/chatRepository";
 import MasterLinkView from "../component/chat/forms/MasterLinkPopup";
 import CreateMasterLink from "../component/chat/forms/CreateMasterLink";
+import { watchMasterLink } from "../services/masterLinkRepository";
 
 const ChatPage = () => {
     const [isOpen, setIsOpen] = useState(true);
@@ -60,6 +61,7 @@ const ChatPage = () => {
         watchChannels();
         watchCategory();
         watchChats();
+        watchMasterLink();
 
       return () => {
         cleanupSocket();

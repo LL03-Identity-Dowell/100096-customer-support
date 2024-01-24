@@ -20,6 +20,7 @@ export const cleanupSocket = () => {
     socketInstance.off('channel_response');
     socketInstance.off('public_room_response');
     socketInstance.off('public_message_response');
+    socketInstance.off('master_link_response');
 }
 
 export const getAuthReq = async () => {
@@ -45,7 +46,8 @@ export const generatePublicLinks = (usernames, count, category_id) => {
 
     shuffledIds.forEach(username => {
         let curr = `${baseurl}type=pulic_chat&public_link_id=${username}&org_id=${org_id}&category_id=${category_id}&product=${product}`;
-        public_links.push(curr)
+        public_links.push({'link':curr})
+
     });
 
     return public_links;

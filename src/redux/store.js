@@ -5,6 +5,7 @@ import socketSlice from "./features/chat/socket-slice";
 import categorySlice  from "./features/chat/category-slice";
 import chatSlice from "./features/chat/chat-slice";
 import userSlice from "./features/auth/user-slice";
+import masterSlice from "./features/chat/master-slice";
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
     categories: categorySlice,
     socket: socketSlice,
     chats: chatSlice,
-    user: userSlice
+    user: userSlice,
+    masterlink: masterSlice,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({}).concat([]),
   devTools: true,
