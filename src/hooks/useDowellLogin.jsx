@@ -9,13 +9,26 @@ import {
   USER_KEY_IN_SESSION_STORAGE,
   getSavedLoggedInUser,
 } from "../utils/utils";
+import { useNavigate } from "react-router-dom";
+import { store } from "../redux/store";
+import { setUserProperty } from "../redux/features/auth/user-slice";
 
 export default function useDowellLogin() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [publicChat, setPublicChat] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate(); 
+  let session_id;
 
   useEffect(() => {
-    const session_id = searchParams.get("session_id");
+
+    if (searchParams.has('type') || searchParams.has('public_link_id') || searchParams.has('org_id')) {
+      setPublicChat(true);
+      setLoggedIn(false);
+      return;
+    }
+
+    session_id = searchParams.get("session_id");
     const id = searchParams.get("id");
     const localUserDetails = getSavedLoggedInUser();
 
@@ -63,5 +76,10 @@ export default function useDowellLogin() {
     window.location.replace(PRODUCT_LOGIN_URL);
   }, []);
 
-  return loggedIn;
+  store.dispatch(setUserProperty({
+    propertyName: 'session_id',
+    value: session_id
+  }))
+
+  return [loggedIn, publicChat];
 }

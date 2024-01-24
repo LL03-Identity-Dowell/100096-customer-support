@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const _initialState = {
     public_links: [],
-    usernames: []
+    usernames: [],
+    user_id: null,
+    session_id: null,
 }
 
 export const userSlice = createSlice({

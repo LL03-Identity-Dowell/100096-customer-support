@@ -53,11 +53,6 @@ const ChatPage = () => {
     useEffect(() => {
         watchServers();
         getUserServers();
-        // createPublicRoom({
-        //   category_id: "65a757c1c5b56cc2cab6ba3d",
-        //   public_link_id: "ab62f07f",
-        //   created_at: Date.now()
-        // })
         watchChannels();
         watchCategory();
         watchChats();

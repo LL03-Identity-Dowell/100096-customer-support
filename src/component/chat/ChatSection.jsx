@@ -14,7 +14,7 @@ import NewMessageLoader from "../common/NewMessageLoader";
 import { FaStaylinked } from "react-icons/fa";
 
 
-const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle, toggleModals }) => {
+const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
   const room_id = useSelector((state) => state.chats.room_id)
   const messages = useSelector((state) => {
     const roomId = state.chats.room_id;

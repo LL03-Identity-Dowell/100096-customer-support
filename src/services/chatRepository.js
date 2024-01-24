@@ -7,10 +7,7 @@ import { addCommonProps, socketInstance } from "./core-providers-di"
 let roomId;
 let newMessage;
 export const createPublicRoom = (data) => {
-    socketInstance.emit('create_public_room', addCommonProps({
-        ...data,
-    })
-    )
+    socketInstance.emit('create_public_room', data);
 }
 
 
@@ -61,7 +58,7 @@ export const watchChats = () => {
     socketInstance.on('public_room_response', (data) =>{
         console.log('public_room_response', data)
         if(data.operation === 'create_public_room') {
-            // set to store
+            
         }
     })
 }

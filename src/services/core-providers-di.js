@@ -45,7 +45,7 @@ export const generatePublicLinks = (usernames, count, category_id) => {
     shuffledIds = shuffledIds.slice(0, count);
 
     shuffledIds.forEach(username => {
-        let curr = `${baseurl}type=pulic_chat&public_link_id=${username}&org_id=${org_id}&category_id=${category_id}&product=${product}`;
+        let curr = `${baseurl}type=public_chat&public_link_id=${username}&org_id=${org_id}&category_id=${category_id}&product=${product}&api_key=${api_key}`;
         public_links.push({'link':curr})
 
     });
@@ -69,8 +69,7 @@ const getOrgId = () => {
     return org_id;
 }
 const getApiKey = async (workspace_id) => {
-    // https://100105.pythonanywhere.com/api/v3/user/?type=get_api_key&workspace_id=type workspace id 
-    const URL = `https://100105.pythonanywhere.com/api/v3/user/?type=get_api_key&workspace_id=${workspace_id}`
+    const URL = `https://100105.pythonanywhere.com/api/v3/user/#?type=get_api_key&workspace_id=${workspace_id}`
     let api_key;
     await axios.get(URL).then((response) => {
         const data = response.data
@@ -87,6 +86,10 @@ const getApiKey = async (workspace_id) => {
 const getUserId = () => {
     const currUser = JSON.parse(sessionStorage.getItem('cust-user'));
     const user_id = currUser['userinfo'].userID;
+    store.dispatch(setUserProperty({
+        propertyName: 'user_id',
+        value: user_id
+    }));
     return user_id;
 }
 
@@ -96,18 +99,18 @@ const getUsernames = async () => {
     let usernames = [];
     await axios
     .post("https://100093.pythonanywhere.com/api/userinfo/", {
-      session_id: "usgu9m5zsjdg9xwp8jmzbdkqy4jvd0m0",
+      session_id: store.getState().user.session_id,
     })
     .then((response) => {
       console.log(response.data);
       const filteredUserportfolio =
-        response.data.selected_product.userportfolio.filter(
+        response.data.selected_product?.userportfolio.filter(
           (portfolio) =>
             portfolio.product === "Dowell Customer Support Centre" &&
             portfolio.member_type === "public"
         );
       currUser = filteredUserportfolio;
-      filteredUserportfolio.map((portfolio) => {
+      filteredUserportfolio?.map((portfolio) => {
         usernames.push(...portfolio.username);
       })
     })
