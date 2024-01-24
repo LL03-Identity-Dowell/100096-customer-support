@@ -38,7 +38,7 @@ export const masterSlice = createSlice({
         setMasterProperty(state, action) {
             let propertyName = action.payload.propertyName;
             let value = action.payload.value;
-            state.propertyName = value;
+            state[propertyName] = value;
         }
     }
 })

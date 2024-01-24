@@ -13,8 +13,8 @@ const CreateMasterLink = ({toggleModals}) => {
     const { control, handleSubmit } = useForm();
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const onSubmit = (data) => {
-        setIsSubmitted(true);
+    const onSubmit = (data) => {        
+        console.log("here here here", category_id, success)
         let count = data.selectedNumber;
         let public_links = generatePublicLinks(user.usernames, count, category_id);
         let job_name = 'customer_support';
@@ -22,11 +22,13 @@ const CreateMasterLink = ({toggleModals}) => {
             links: public_links,
             job_name
         })
+        setIsSubmitted(true);
     }
 
     useEffect(() => {
         if(success && isSubmitted) {
             toggleModals('createMasterLink', false);
+            setIsSubmitted(false);
         }
     }, [isSubmitted, success])
 
@@ -43,7 +45,7 @@ const CreateMasterLink = ({toggleModals}) => {
         <form onSubmit={handleSubmit(onSubmit)} className="text-white">
 
             <label className="block text-sm font-bold mb-2" htmlFor="selectedNumber">
-                Select a Number (1 to 25):
+                Select a Number (1 to {user.usernames?.length || 0}):
                 </label>
                 <Controller
                     name="selectedNumber"
