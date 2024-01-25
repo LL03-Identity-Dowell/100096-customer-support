@@ -13,9 +13,10 @@ export const createMasterLink = (data) => {
 }
 
 
-export const watchMasterLink = (data) => {
+export const watchMasterLink = () => {
 
     socketInstance.on('master_link_response', (data) => {
+        console.log('master_link_response', data)
         if(data?.operation === 'create_master_link') {
             store.dispatch(setMasterLink(data))         
         } 

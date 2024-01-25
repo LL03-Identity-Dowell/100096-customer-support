@@ -1,8 +1,10 @@
 import { IoIosCheckmark } from "react-icons/io";
-import { USER_ID } from "../../services/core-providers-di";
+import { useSelector } from "react-redux";
 
 const ChatMessage = ({ message }) => {
-  const isSender = message?.author === USER_ID;
+
+  const {user_id} = useSelector((state) => state.user);
+  const isSender = message?.author === user_id;
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);

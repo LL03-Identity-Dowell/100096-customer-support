@@ -5,10 +5,7 @@ import FormInput from '../../common/FormInput';
 import { CiHashtag } from "react-icons/ci";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { USER_ID } from '../../../services/core-providers-di';
-import { PiSpeakerHigh } from "react-icons/pi";
 import { createCategory } from '../../../services/catagoryRepository';
-import { createChannel } from '../../../services/channelRepository';
 
 
 const schema = yup.object().shape({
@@ -16,6 +13,8 @@ const schema = yup.object().shape({
 })
 
 const CreateCategoryForm = ({toggleModals}) => {
+
+    const {user_id} = useSelector((state) => state.user);
     const server_id = useSelector((state) => state.categories.server_id);
         const categoryServers = useSelector((state) => {
             const serverId = state.categories.server_id;

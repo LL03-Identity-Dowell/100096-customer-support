@@ -8,7 +8,6 @@ import { IoMdSend } from "react-icons/io";
 import { MdOutlineMenuOpen, MdOutlineAttachFile } from "react-icons/md";
 import { useSelector } from "react-redux";
 import CircularLoader from "../common/CircularLoader";
-import { USER_ID } from "../../services/core-providers-di";
 import { sendMessage } from "../../services/chatRepository";
 import NewMessageLoader from "../common/NewMessageLoader";
 import { FaStaylinked } from "react-icons/fa";
@@ -16,6 +15,7 @@ import { FaStaylinked } from "react-icons/fa";
 
 const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
   const room_id = useSelector((state) => state.chats.room_id)
+  const {user_id} = useSelector((state) => state.user)
   const messages = useSelector((state) => {
     const roomId = state.chats.room_id;
     return state.chats[roomId]
@@ -35,7 +35,7 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
       const messageData = {
         room_id,
         message_data: chatInput,
-        user_id: USER_ID,
+        user_id: user_id,
         reply_to: 'None',
         created_at: Date.now()
       }

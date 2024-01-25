@@ -17,8 +17,7 @@ export default function useDowellLogin() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [publicChat, setPublicChat] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate(); 
-  let session_id;
+  let [sessionIdValue, setSessionIdValue] = useState('');
 
   useEffect(() => {
 
@@ -28,7 +27,8 @@ export default function useDowellLogin() {
       return;
     }
 
-    session_id = searchParams.get("session_id");
+    const session_id = searchParams.get("session_id");
+    setSessionIdValue(session_id);
     const id = searchParams.get("id");
     const localUserDetails = getSavedLoggedInUser();
 
@@ -78,7 +78,7 @@ export default function useDowellLogin() {
 
   store.dispatch(setUserProperty({
     propertyName: 'session_id',
-    value: session_id
+    value: sessionIdValue
   }))
 
   return [loggedIn, publicChat];

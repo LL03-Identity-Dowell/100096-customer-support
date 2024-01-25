@@ -14,7 +14,6 @@ const CreateMasterLink = ({toggleModals}) => {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const onSubmit = (data) => {        
-        console.log("here here here", category_id, success)
         let count = data.selectedNumber;
         let public_links = generatePublicLinks(user.usernames, count, category_id);
         let job_name = 'customer_support';

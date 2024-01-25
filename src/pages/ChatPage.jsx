@@ -13,7 +13,7 @@ import { watchChannels } from "../services/channelRepository";
 import EditServerForm from "../component/chat/forms/EditServerForm";
 import { watchCategory } from "../services/catagoryRepository";
 import CreateCategoryForm from "../component/chat/forms/CreateCategoryForm";
-import { createPublicRoom, watchChats } from "../services/chatRepository";
+import { createPublicRoom, watchChats, watchPublicChats } from "../services/chatRepository";
 import MasterLinkView from "../component/chat/forms/MasterLinkPopup";
 import CreateMasterLink from "../component/chat/forms/CreateMasterLink";
 import { watchMasterLink } from "../services/masterLinkRepository";
@@ -21,6 +21,7 @@ import { watchMasterLink } from "../services/masterLinkRepository";
 const ChatPage = () => {
     const [isOpen, setIsOpen] = useState(true);
     const isConnected  = useSelector((state) => state.socket.isConnected)
+    const {user_id, workspace_id} = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [modals, setModals] = useState({
       showAddServerModal: false,
@@ -52,16 +53,23 @@ const ChatPage = () => {
 
     useEffect(() => {
         watchServers();
-        getUserServers();
         watchChannels();
         watchCategory();
         watchChats();
         watchMasterLink();
+        watchPublicChats();
 
       return () => {
         cleanupSocket();
       };
     }, [])
+
+    useEffect(() => {
+      console.log(workspace_id, user_id)
+      if(workspace_id && user_id){
+        getUserServers();
+      }
+    }, [user_id, workspace_id])
 
     const toggleModals = (modalName, value) => {
       if(value !== undefined){

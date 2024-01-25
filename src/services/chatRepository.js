@@ -10,8 +10,6 @@ export const createPublicRoom = (data) => {
     socketInstance.emit('create_public_room', data);
 }
 
-
-
 export const joinPublicRoom = (room_id) => {
     store.dispatch(setChatProperty({
         propertyName: 'isLoading',
@@ -52,9 +50,16 @@ export const watchChats = () => {
                 data,
                 newMessage
             }))
+        } else if(data?.operation === 'create_public_room') {
+            if(data.status == 'success') {
+                joinPublicRoom(data.data._id);
+            }
         }
     })
 
+}
+
+export const watchPublicChats = () => {
     socketInstance.on('public_room_response', (data) =>{
         console.log('public_room_response', data)
         if(data.operation === 'create_public_room') {

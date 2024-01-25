@@ -8,10 +8,10 @@ import { IoMdSend } from "react-icons/io";
 import { MdOutlineAttachFile } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import CircularLoader from "../component/common/CircularLoader";
-import { createPublicRoom, sendMessage } from "../services/chatRepository";
+import { createPublicRoom, sendMessage, watchPublicChats } from "../services/chatRepository";
 import NewMessageLoader from "../component/common/NewMessageLoader";
 import { useSearchParams } from "react-router-dom";
-import { setUserProperty } from "../redux/features/auth/user-slice";
+import { setUser, setUserProperty } from "../redux/features/auth/user-slice";
 import { watchChats } from "../services/chatRepository";
 import { cleanupSocket } from "../services/core-providers-di";
 
@@ -22,8 +22,10 @@ const PublicChatPage = () => {
     const orgId = searchParams.get('org_id');
     const categoryId = searchParams.get('category_id');
     const product = searchParams.get('product');
+    const api_key = searchParams.get('api_key')
 
     const room_id = useSelector((state) => state.chats.room_id);
+    const {user_id} = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const messages = useSelector((state) => {
       const roomId = state.chats.room_id;
@@ -34,27 +36,23 @@ const PublicChatPage = () => {
 
     useEffect(() => {
       watchChats();
+      watchPublicChats();
 
-      return () => {
-        cleanupSocket();
-      };
-    }, [])
-
-    useEffect(() => {
-      dispatch(setUserProperty({
-        propertyName: 'user_id',
-        value: publicLinkId
-      }))
+      dispatch(setUser({user_id: publicLinkId, product, api_key, org_id: orgId}))
 
       createPublicRoom({
         public_link_id : publicLinkId,
         category_id: categoryId,
         workspace_id: orgId,
         product,
+        api_key,
         created_at: Date.now()        
       })
-      
-    }, [type, publicLinkId, orgId, categoryId, product])
+
+      return () => {
+        cleanupSocket();
+      };
+    }, [])
   
     useEffect(() => {
       if (scrollContainerRef.current) {
@@ -68,7 +66,7 @@ const PublicChatPage = () => {
         const messageData = {
           room_id,
           message_data: chatInput,
-          user_id: USER_ID,
+          user_id,
           reply_to: 'None',
           created_at: Date.now()
         }
@@ -77,10 +75,6 @@ const PublicChatPage = () => {
       }
     }
 
-    console.log("here here here", publicLinkId)
-    
-
-  
     return (
       <div className={`ml-3 flex flex-col h-screen w-full`}>
         <div className="flex justify-between items-center p-4 bg-[#F1F3F4] border-b-2 border-gray-300 rounded-t-3xl">

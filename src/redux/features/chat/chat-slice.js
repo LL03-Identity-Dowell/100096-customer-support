@@ -77,6 +77,29 @@ export const chatSlice = createSlice({
                 state[room_id]?.messages.push(message)
                 state[room_id].isSendingMessage = value;
             }
+        },
+
+        setPublicChatRoom(state, action) {
+            let data = action.payload.data;
+            let room_id = action.payload.room_id;
+
+            if(!data.data) {
+                return;
+            }
+
+            if(!state[room_id]){
+                state[room_id] = {}
+            }
+
+            if(!state[room_id].hasOwnProperty('messages')){
+                state[room_id].messages = []
+            }
+
+            handleApiResult(state, action);
+            if(data.status == 'success') {
+                state[room_id].name = data.data.name;
+                state[room_id].category = data.data.category;
+            }
         }
     }
 })

@@ -1,16 +1,16 @@
 import { addCommonProps, socketInstance } from "./core-providers-di.js";
-import { USER_ID } from "./core-providers-di.js";
 import { store } from '../redux/store.js'
 import { addServer, setLoading, setServers, setSuccess, setDeleteServer, setUpdatedServer } from "../redux/features/chat/servers-slice.js";
 
 let rightClickedServerId;
 let updatedServerName;
+let user_id = store.getState().user.user_id;
 
 let serverName;
 export function getUserServers () {
     store.dispatch(setLoading(true))
     socketInstance.emit('get_user_servers', addCommonProps({
-        user_id : USER_ID
+        user_id
     }));
 }
 

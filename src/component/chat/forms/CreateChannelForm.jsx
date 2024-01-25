@@ -5,7 +5,6 @@ import FormInput from '../../common/FormInput';
 import { CiHashtag } from "react-icons/ci";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { USER_ID } from '../../../services/core-providers-di';
 import { PiSpeakerHigh } from "react-icons/pi";
 import { createChannel } from '../../../services/channelRepository';
 

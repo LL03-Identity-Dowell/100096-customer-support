@@ -38,7 +38,6 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
 
   const handleServerClick = (serverId, index) => {
     setActiveBorder(index)
-    // getServerChannels(serverId);
     getServerCategory(serverId);
   }
 

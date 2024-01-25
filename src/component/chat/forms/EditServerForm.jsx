@@ -5,7 +5,6 @@ import FormInput from '../../common/FormInput';
 import { editServer } from '../../../services/serverRepository';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { USER_ID } from '../../../services/core-providers-di';
 
 const schema = yup.object().shape({
     name:  yup.string().required("Please enter your valid server name").min(5, "Server name should be longer than 5 characters"),
@@ -13,6 +12,7 @@ const schema = yup.object().shape({
 
 const EditServerForm = ({toggleModals, rightClickedServer}) => {
 
+    const {user_id} = useSelector((state) => state.user);
     const {success, isError, error} = useSelector((state) => state.servers);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const { register, handleSubmit, formState: {errors} } = useForm({
@@ -29,7 +29,7 @@ const EditServerForm = ({toggleModals, rightClickedServer}) => {
             member_list: [],
             channels: [],
             events: [],
-            owner: USER_ID,
+            owner: user_id,
             server_id: rightClickedServer.id,
             created_at: Date.now()
         }
