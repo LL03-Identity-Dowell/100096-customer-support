@@ -36,6 +36,7 @@ export const sendMessage = (data) => {
 }
 
 
+
 export const watchChats = () => {
     socketInstance.on('public_message_response', (data) => {
         console.log('public_message_response', data)
@@ -52,7 +53,10 @@ export const watchChats = () => {
             }))
         } else if(data?.operation === 'create_public_room') {
             if(data.status == 'success') {
-                joinPublicRoom(data.data._id);
+                let public_room_id = data.data._id;
+                if(public_room_id){
+                    joinPublicRoom(data.data._id);
+                }
             }
         }
     })

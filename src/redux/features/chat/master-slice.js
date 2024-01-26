@@ -14,7 +14,6 @@ export const masterSlice = createSlice({
     reducers: {
         setMasterLink(state, action){
             let data = action.payload;
-            console.log('', data)
             if(data.status == 'success') {
                 let qrcodes = data.data.qrcodes;
                 qrcodes?.forEach(qrcode => {

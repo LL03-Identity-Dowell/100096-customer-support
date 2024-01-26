@@ -55,6 +55,12 @@ export const generatePublicLinks = (usernames, count, category_id) => {
 
     });
 
+    console.log("public_links", public_links)
+    store.dispatch(setUserProperty({
+        propertyName: 'public_links',
+        value: public_links
+    }))
+
     return public_links;
 }
 
