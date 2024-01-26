@@ -106,7 +106,7 @@ const PublicChatPage = () => {
               className="w-10 md:w-16 rounded-full"
             />
             <div className="font-bold ml-3 mt-4 hidden md:block uppercase">
-              WORKFLOW AI
+              Support Team
             </div>
           </div>
   
