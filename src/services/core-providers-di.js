@@ -17,6 +17,7 @@ export const cleanupSocket = () => {
     socketInstance.off('public_room_response');
     socketInstance.off('public_message_response');
     socketInstance.off('master_link_response');
+    socketInstance.off('new_public_room')
 }
 
 export const getAuthReq = async () => {
@@ -55,7 +56,6 @@ export const generatePublicLinks = (usernames, count, category_id) => {
 
     });
 
-    console.log("public_links", public_links)
     store.dispatch(setUserProperty({
         propertyName: 'public_links',
         value: public_links
@@ -69,7 +69,6 @@ export const addCommonProps = (payload) => {
     let org_id = store.getState().user.workspace_id;
     let api_key = store.getState().user.api_key;
     let user_id = store.getState().user.user_id;
-    console.log('org_id', org_id)
     return {
         ...payload,
         workspace_id: org_id,

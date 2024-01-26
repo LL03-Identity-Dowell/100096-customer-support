@@ -1,4 +1,5 @@
-import { addMessage, setChatProperty, setChatRoomId, setChats } from "../redux/features/chat/chat-slice"
+import { addRoom } from "../redux/features/chat/category-slice";
+import { addMessage, setChatProperty, setChatRoomId, setChats, setPublicChatRoom } from "../redux/features/chat/chat-slice"
 import { store } from "../redux/store"
 import { addCommonProps, socketInstance } from "./core-providers-di"
 
@@ -52,12 +53,12 @@ export const watchChats = () => {
                 newMessage
             }))
         } else if(data?.operation === 'create_public_room') {
-            if(data.status == 'success') {
-                let public_room_id = data.data._id;
-                if(public_room_id){
-                    joinPublicRoom(data.data._id);
-                }
-            }
+            store.dispatch(setChatRoomId({
+                room_id: data.room_id
+            }))
+            store.dispatch(setPublicChatRoom({
+                data,
+            }))
         }
     })
 
@@ -67,7 +68,18 @@ export const watchPublicChats = () => {
     socketInstance.on('public_room_response', (data) =>{
         console.log('public_room_response', data)
         if(data.operation === 'create_public_room') {
-            
+            store.dispatch(setChatRoomId({
+                room_id: data.data._id
+            }))
         }
+    })
+}
+
+export const watchNewPublicRoom = () => {
+
+    socketInstance.on('new_public_room', (data) => {
+        console.log('new_public_room', data)
+        store.dispatch(addRoom(data)); 
+
     })
 }

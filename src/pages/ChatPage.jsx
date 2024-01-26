@@ -13,7 +13,7 @@ import { watchChannels } from "../services/channelRepository";
 import EditServerForm from "../component/chat/forms/EditServerForm";
 import { watchCategory } from "../services/catagoryRepository";
 import CreateCategoryForm from "../component/chat/forms/CreateCategoryForm";
-import { createPublicRoom, watchChats, watchPublicChats } from "../services/chatRepository";
+import { createPublicRoom, watchChats, watchNewPublicRoom, watchPublicChats } from "../services/chatRepository";
 import MasterLinkView from "../component/chat/forms/MasterLinkPopup";
 import CreateMasterLink from "../component/chat/forms/CreateMasterLink";
 import { watchMasterLink } from "../services/masterLinkRepository";
@@ -58,6 +58,7 @@ const ChatPage = () => {
         watchChats();
         watchMasterLink();
         watchPublicChats();
+        watchNewPublicRoom();
 
       return () => {
         cleanupSocket();

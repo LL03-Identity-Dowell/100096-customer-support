@@ -48,11 +48,12 @@ export const categorySlice = createSlice({
             if(!server_id){
                 return;
             }
+
             handleApiResult(state,action)
             if (data.status == 'success') {
                 state[server_id].categories.push({
                     name: newCategory.name,
-                    id: data.inserted_id
+                    _id: data.data.inserted_id
                 })
             } else {
                 state[server_id].categories = state[server_id].categories;
@@ -61,13 +62,28 @@ export const categorySlice = createSlice({
         },
 
         addRoom(state, action){
-            let data = action.payload.data;
-            let category_id = action.payload.category_id;
-            let server_id = action.payload.server_id;
+            let data = action.payload;
+            if(data.status == 'success') {
+                let category_id = data.data.category;
+                let server_id = data.data.server;
+                let room_id = data.data._id;
+    
+                if(!state[server_id]){
+                    state[server_id] = {}
+                }           
 
-            if(!state[server_id]){
-                state[server_id] = {}
-            }           
+                const categoryIndex = state[server_id].categories.findIndex(
+                    (category) => category._id === category_id
+                );
+
+                if (categoryIndex !== -1) {
+                    if(!state[server_id].categories[categoryIndex].rooms){
+                        state[server_id].categories[categoryIndex].rooms = []
+                    }
+                    state[server_id].categories[categoryIndex].rooms.push(room_id);
+                }
+            }
+
             
         },  
 
@@ -98,5 +114,5 @@ export const categorySlice = createSlice({
 })
 
 
-export const {setCategories, setCategoriesProperty, setCategoriesServerId, addCategory, setCategoryId} = categorySlice.actions;
+export const {setCategories, setCategoriesProperty, setCategoriesServerId, addCategory, setCategoryId, addRoom} = categorySlice.actions;
 export default categorySlice.reducer;

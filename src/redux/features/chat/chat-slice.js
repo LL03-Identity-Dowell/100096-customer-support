@@ -81,28 +81,30 @@ export const chatSlice = createSlice({
 
         setPublicChatRoom(state, action) {
             let data = action.payload.data;
-            let room_id = action.payload.room_id;
-
-            if(!data.data) {
-                return;
-            }
+            let room_id = data.room_id;
 
             if(!state[room_id]){
                 state[room_id] = {}
             }
-
-            if(!state[room_id].hasOwnProperty('messages')){
-                state[room_id].messages = []
+            
+            if (data.status == 'success') {
+                state[room_id].isLoading = false;
+                state[room_id].success = true;
+                state[room_id].isError = false;
+                state[room_id].error = '';
+            } else {
+                state[room_id].isLoading = false;
+                state[room_id].success = false;
+                state[room_id].isError = true;
+                state[room_id].error = data.data;
             }
 
-            handleApiResult(state, action);
-            if(data.status == 'success') {
-                state[room_id].name = data.data.name;
-                state[room_id].category = data.data.category;
+            if(!state[room_id].hasOwnProperty('messages')){
+                state[room_id].messages = data.data
             }
         }
     }
 })
 
-export const {setChatProperty, setChats, setChatRoomId, addMessage} = chatSlice.actions;
+export const {setChatProperty, setChats, setChatRoomId, addMessage, setPublicChatRoom} = chatSlice.actions;
 export default chatSlice.reducer;

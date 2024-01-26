@@ -5,7 +5,6 @@ import { socketInstance } from "./core-providers-di"
 import { addCommonProps } from "./core-providers-di"
 
 export const createMasterLink = (data) => {
-    console.log(data)
     store.dispatch(setMasterProperty({propertyName: 'success', value: false}))
     socketInstance.emit('create_master_link', addCommonProps({
         ...data

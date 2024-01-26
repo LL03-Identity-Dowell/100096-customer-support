@@ -17,12 +17,7 @@ import { cleanupSocket } from "../services/core-providers-di";
 
 const PublicChatPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const type = searchParams.get('type');
-    const publicLinkId = searchParams.get('public_link_id');
-    const orgId = searchParams.get('org_id');
-    const categoryId = searchParams.get('category_id');
-    const product = searchParams.get('product');
-    const api_key = searchParams.get('api_key')
+    const [paramsReq, setParamsReq] = useState({});
 
     const room_id = useSelector((state) => state.chats.room_id);
     const {user_id} = useSelector((state) => state.user);
@@ -37,17 +32,21 @@ const PublicChatPage = () => {
     useEffect(() => {
       watchChats();
       watchPublicChats();
-
-      dispatch(setUser({user_id: publicLinkId, product, api_key, org_id: orgId}))
-
-      createPublicRoom({
-        public_link_id : publicLinkId,
-        category_id: categoryId,
-        workspace_id: orgId,
-        product,
-        api_key,
-        created_at: Date.now()        
+      setParamsReq({
+        type: searchParams.get('type'),
+        publicLinkId: searchParams.get('public_link_id'),
+        orgId: searchParams.get('org_id'),
+        categoryId: searchParams.get('category_id'),
+        product: searchParams.get('product'),
+        api_key: searchParams.get('api_key')
       })
+
+      dispatch(setUser(
+        {user_id: searchParams.get('public_link_id'), 
+        product: searchParams.get('product'), 
+        api_key: searchParams.get('api_key'),
+        org_id: searchParams.get('org_id')
+      }))
 
       return () => {
         cleanupSocket();
@@ -60,6 +59,26 @@ const PublicChatPage = () => {
           scrollContainerRef.current.scrollHeight;
       }
     }, [messages]);
+
+    useEffect(() => {
+     
+      if(paramsReq?.publicLinkId && paramsReq?.categoryId && paramsReq?.orgId && paramsReq?.product && paramsReq?.api_key) {
+
+        const {publicLinkId, categoryId, orgId, product, api_key} = paramsReq;
+
+          createPublicRoom({
+            // public_link_id : publicLinkId,
+            public_link_id: publicLinkId,
+            // category_id: categoryId,
+            category_id: categoryId,
+            workspace_id: orgId,
+            // workspace_id: '6385c0f18eca0fb652c94558',
+            product,
+            api_key,
+            created_at: Date.now()        
+          }) 
+      }
+    }, [paramsReq])
   
     const handleSendMessage = () => {
       if(chatInput.trim() !== '') {
@@ -110,7 +129,7 @@ const PublicChatPage = () => {
               <p>{messages?.error}</p>
             ) : !room_id ? (
               <p className="text-3xl font-light text-center h-full flex items-center justify-center">
-                Please Select a room to chat in!
+                Room not created!
               </p>
             ) : (
               <div className="flex flex-col space-y-2 h-full justify-end mt-auto">
