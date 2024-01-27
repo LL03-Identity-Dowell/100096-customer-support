@@ -75,6 +75,9 @@ export const chatSlice = createSlice({
             let value  = false
             
             if(data.status == 'success') {
+                if(!state[room_id]?.messages) {
+                    state[room_id]["messages"] = []
+                }
                 state[room_id]?.messages.push(message)
                 state[room_id]["isSendingMessage"] = value;
             }
