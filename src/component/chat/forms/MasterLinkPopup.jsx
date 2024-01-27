@@ -5,15 +5,11 @@ import { useEffect, useState } from "react";
 const MasterLinkView = ({toggleModals}) => {
 
     const masterlink = useSelector((state) => state.masterlink);
-    const [links, setLinks] = useState([]);
-    const handleCopyClick = (index) => {
-        const linkToCopy = links[index];
-        navigator.clipboard.writeText(linkToCopy);
-      };
+    const [link, setLink] = useState([]);
     
     useEffect(() => {
         if(masterlink && masterlink.masterLinks){
-            setLinks(masterlink.masterLinks)
+            setLink(masterlink.masterLinks?.slice(-1)[0])
         }
     }, [masterlink, masterlink?.masterLinks])
 
@@ -23,20 +19,22 @@ const MasterLinkView = ({toggleModals}) => {
 
             <h5 className='mt-6 text-xl font-semibold text-black dark:text-white'>List of Master Links</h5>
             <p className='dark:text-gray-100 text-slate-400 mb-4 text-xs'>This are a list of master links available for this channel, share them and help our customers! </p>
+            
             {
-                masterlink?.masterLinks.map((link, index) => (
-                    <li key={index} className="flex items-center space-x-2">
+                link && (
+                    <li className="flex items-center space-x-2">
                         <span className="flex-grow">{link}</span>
                         <button
-                        onClick={() => handleCopyClick(index)}
+                        onClick={() =>  navigator.clipboard.writeText(link)}
                         className="flex items-center px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
                         >
                         <FiCopy className="mr-1" />
                         Copy
                         </button>
-                  </li>
-                ))
-            }                
+                    </li>
+                )
+            }
+
             {/* <button type="submit" 
                 onClick={() => toggleModals('createMasterLink', true)}
                 className={`py-2 px-5 my-6 inline-block tracking-wide border align-middle duration-500 text-base text-center rounded-md w-full 

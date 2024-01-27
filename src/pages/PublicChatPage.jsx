@@ -20,6 +20,7 @@ const PublicChatPage = () => {
     const [paramsReq, setParamsReq] = useState({});
 
     const room_id = useSelector((state) => state.chats.room_id);
+    const {publicRoomLoading} = useSelector((state) => state.chats);
     const {user_id} = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const messages = useSelector((state) => {
@@ -123,7 +124,7 @@ const PublicChatPage = () => {
           className="relative h-[80%] flex-grow overflow-y-auto bg-white px-2 "
         >
           {
-            messages?.isLoading ? (
+            publicRoomLoading || messages?.isLoading ? (
               <CircularLoader />
             ) : messages?.isError ? (
               <p>{messages?.error}</p>
@@ -133,7 +134,7 @@ const PublicChatPage = () => {
               </p>
             ) : (
               <div className="flex flex-col space-y-2 h-full justify-end mt-auto">
-                {messages?.messages.map((message, index) => (
+                {messages?.messages?.map((message, index) => (
                   <ChatMessage key={index} message={message} />
                 ))}
                 {

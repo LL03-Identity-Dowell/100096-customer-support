@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const _initialState = {
-    room_id : null
+    room_id : null,
+    publicRoomLoading: true
 }
 
 
@@ -75,7 +76,7 @@ export const chatSlice = createSlice({
             
             if(data.status == 'success') {
                 state[room_id]?.messages.push(message)
-                state[room_id].isSendingMessage = value;
+                state[room_id]["isSendingMessage"] = value;
             }
         },
 
@@ -102,9 +103,16 @@ export const chatSlice = createSlice({
             if(!state[room_id].hasOwnProperty('messages')){
                 state[room_id].messages = data.data
             }
+        },
+
+        setPublicRoomProperty(state, action) {
+            let propertyName = action.payload.propertyName;
+            let value = action.payload.value;
+
+            state[propertyName] = value;
         }
     }
 })
 
-export const {setChatProperty, setChats, setChatRoomId, addMessage, setPublicChatRoom} = chatSlice.actions;
+export const {setChatProperty, setChats, setChatRoomId, addMessage, setPublicChatRoom, setPublicRoomProperty} = chatSlice.actions;
 export default chatSlice.reducer;
