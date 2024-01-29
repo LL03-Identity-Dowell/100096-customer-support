@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 const _initialState = {
     room_id : null,
@@ -20,6 +21,7 @@ const handleApiResult = (state, action) => {
         state[room_id].success = false;
         state[room_id].isError = true;
         state[room_id].error = data.data;
+        toast.error(`${data.data}`)
     }
   };
 
@@ -80,6 +82,8 @@ export const chatSlice = createSlice({
                 }
                 state[room_id]?.messages.push(message)
                 state[room_id]["isSendingMessage"] = value;
+            }else {
+                toast.error("Message Not Sent! Try Again!")
             }
         },
 

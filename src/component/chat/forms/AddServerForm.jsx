@@ -5,6 +5,7 @@ import FormInput from '../../common/FormInput';
 import { createServer } from '../../../services/serverRepository';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
     name:  yup.string().required("Please enter your valid server name").min(5, "Server name should be longer than 5 characters"),
@@ -34,6 +35,7 @@ const AddServerForm = ({toggleModals}) => {
 
     useEffect(() => {
         if(success && isSubmitted) {
+            toast.success("Server Created!")
             toggleModals('showAddServerModal', false);
         }
     }, [isSubmitted, success])

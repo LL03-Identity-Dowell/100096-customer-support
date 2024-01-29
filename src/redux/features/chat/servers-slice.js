@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 const initialState = {
   isLoading: true,
@@ -9,7 +10,7 @@ const initialState = {
 };
 
 const handleApiResult = (state, action) => {
-  const data = action.payload.data;
+  const data = action.payload;
 
   if (data.status === "success") {
     state.isLoading = false;
@@ -17,6 +18,7 @@ const handleApiResult = (state, action) => {
     state.isError = false;
     state.error = "";
   } else {
+    toast.error(`servers ${data.data}`)
     state.isLoading = false;
     state.isError = true;
     state.error = data.data;
@@ -60,6 +62,7 @@ export const serversSlice = createSlice({
             state.servers = state.servers.filter(
               (server) => server.id !== deletedServerId
             );
+            toast.success("Server Deleted!")
         }
     },
 

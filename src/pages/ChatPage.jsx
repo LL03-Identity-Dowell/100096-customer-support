@@ -18,6 +18,7 @@ import MasterLinkView from "../component/chat/forms/MasterLinkPopup";
 import CreateMasterLink from "../component/chat/forms/CreateMasterLink";
 import { getUsedUsernames, watchMasterLink } from "../services/masterLinkRepository";
 import SetPublicRoomNameForm from "../component/chat/forms/SetPublicRoomNameForm";
+import { ToastContainer } from "react-toastify";
 
 const ChatPage = () => {
     const [isOpen, setIsOpen] = useState(true);
@@ -161,6 +162,7 @@ const ChatPage = () => {
             </PopupModal>
           )
         }
+        
       </div>
     )
 }

@@ -7,6 +7,9 @@ import { getAuthReq } from "./services/core-providers-di";
 import { BrowserRouter, Route, Routes,} from 'react-router-dom';
 import LoginPage from "./pages/LoginPage";
 import CircularLoader from "./component/common/CircularLoader";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function App() {
   const [loggedIn, publicChat] = useDowellLogin();
@@ -28,6 +31,20 @@ export default function App() {
       <Routes>
         <Route path="/" element={loggedIn && fetchFinished ? <ChatPage /> : publicChat ? <PublicChatPage /> : <CircularLoader /> }/>
       </Routes>
+      <ToastContainer 
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition: Bounce
+          >
+          </ToastContainer>
     </>
   );
 }

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import {useForm, Controller} from 'react-hook-form';
 import { generatePublicLinks } from "../../../services/core-providers-di";
 import { createMasterLink } from "../../../services/masterLinkRepository";
+import { toast } from "react-toastify";
 
 const CreateMasterLink = ({toggleModals}) => {
 
@@ -26,6 +27,7 @@ const CreateMasterLink = ({toggleModals}) => {
 
     useEffect(() => {
         if(success && isSubmitted) {
+            toast.success("Master Link Created!")
             toggleModals('createMasterLink', false);
             toggleModals('masterLinkView', true);
             setIsSubmitted(false);

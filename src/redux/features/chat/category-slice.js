@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { toast } from "react-toastify";
 
 
 const _initialState = {
@@ -18,6 +19,7 @@ const handleApiResult = (state, action) => {
         state[server_id].success = false;
         state[server_id].isError = true;
         state[server_id].error = data.data;
+        toast.error(`${data.data}`)
     }
   };
 
@@ -82,6 +84,7 @@ export const categorySlice = createSlice({
                     }
                     state[server_id].categories[categoryIndex].rooms.push(room_id);
                 }
+                toast.success(`Room ${room_id} Created!`)
             }
 
             

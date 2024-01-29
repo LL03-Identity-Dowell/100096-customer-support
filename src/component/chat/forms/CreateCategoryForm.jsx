@@ -6,6 +6,7 @@ import { CiHashtag } from "react-icons/ci";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { createCategory } from '../../../services/catagoryRepository';
+import { toast } from 'react-toastify';
 
 
 const schema = yup.object().shape({
@@ -42,6 +43,7 @@ const CreateCategoryForm = ({toggleModals}) => {
         useEffect(() => {
             const success = categoryServers?.success
             if( success == true && isSubmitted) {
+                toast.success("Category Created!")
                 toggleModals('categoryModal', false)
             }
         }, [isSubmitted, categoryServers?.success])
