@@ -17,6 +17,7 @@ import { createPublicRoom, watchChats, watchNewPublicRoom, watchPublicChats } fr
 import MasterLinkView from "../component/chat/forms/MasterLinkPopup";
 import CreateMasterLink from "../component/chat/forms/CreateMasterLink";
 import { watchMasterLink } from "../services/masterLinkRepository";
+import SetPublicRoomNameForm from "../component/chat/forms/SetPublicRoomNameForm";
 
 const ChatPage = () => {
     const [isOpen, setIsOpen] = useState(true);
@@ -30,6 +31,7 @@ const ChatPage = () => {
       categoryModal: false,
       masterLinkView: false,
       createMasterLink: false,
+      setDisplayNameModal: false,
     });
     const [rightClickedServer, setRightClickedServer] = useState(null);
   
@@ -148,6 +150,13 @@ const ChatPage = () => {
           modals.createMasterLink && (
             <PopupModal toggleModals={toggleModals} modalName='createMasterLink'>
               <CreateMasterLink toggleModals={toggleModals}/>
+            </PopupModal>
+          )
+        }
+        {
+          modals.setDisplayNameModal && (
+            <PopupModal toggleModals={toggleModals} modalName='setDisplayNameModal'>
+              <SetPublicRoomNameForm toggleModals={toggleModals}/>
             </PopupModal>
           )
         }

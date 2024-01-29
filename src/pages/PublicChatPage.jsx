@@ -96,7 +96,7 @@ const PublicChatPage = () => {
     }
 
     return (
-      <div className={`ml-3 flex flex-col h-screen w-full`}>
+      <div className={`flex flex-col h-screen w-full`}>
         <div className="flex justify-between items-center p-4 bg-[#F1F3F4] border-b-2 border-gray-300 rounded-t-3xl">
             <img src={logo} className="w-10 md:w-16 rounded-md" />
   

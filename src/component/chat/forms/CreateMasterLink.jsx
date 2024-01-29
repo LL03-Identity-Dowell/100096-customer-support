@@ -28,8 +28,8 @@ const CreateMasterLink = ({toggleModals}) => {
         if(success && isSubmitted) {
             toggleModals('createMasterLink', false);
             toggleModals('masterLinkView', true);
-            setIsSubmitted(false);
         }
+        setIsSubmitted(false);
     }, [isSubmitted, success])
 
     return (

@@ -11,6 +11,12 @@ export const createPublicRoom = (data) => {
     socketInstance.emit('create_public_room', data);
 }
 
+export const setPublicRoomDisplayName = (data) => {
+    socketInstance.emit('set_public_room_display_name', addCommonProps({
+        ...data
+    }))
+}
+
 export const joinPublicRoom = (room_id) => {
     store.dispatch(setChatProperty({
         propertyName: 'isLoading',
