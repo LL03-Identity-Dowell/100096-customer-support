@@ -1,7 +1,7 @@
 import {io} from 'socket.io-client'
 import axios from 'axios';
 import { store } from '../redux/store';
-import { setUser, setUserProperty } from '../redux/features/auth/user-slice';
+import { markUsedUsers, setUser, setUserProperty } from '../redux/features/auth/user-slice';
 // const SocketURL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:4000';
 
 
@@ -47,11 +47,14 @@ export const generatePublicLinks = (usernames, count, category_id) => {
     let api_key = store.getState().user.api_key;
     let public_links = []
     const baseurl = 'https://ll03-identity-dowell.github.io/100096-customer-support/#?'
-    let shuffledIds = [...usernames].sort(() => Math.random() - 0.5);
-    shuffledIds = shuffledIds.slice(0, count);
+    let shuffledAndUnusedUsers = [...usernames]
+        .filter(username => !username.isUsed) 
+        .sort(() => Math.random() - 0.5);
 
-    shuffledIds.forEach(username => {
-        let curr = `${baseurl}type=public_chat&public_link_id=${username}&org_id=${org_id}&category_id=${category_id}&product=${product}&api_key=${api_key}`;
+    shuffledAndUnusedUsers = shuffledAndUnusedUsers.slice(0, count);
+
+    shuffledAndUnusedUsers.forEach(username => {
+        let curr = `${baseurl}type=public_chat&public_link_id=${username?.username}&org_id=${org_id}&category_id=${category_id}&product=${product}&api_key=${api_key}`;
         public_links.push({'link':curr})
 
     });
@@ -60,6 +63,9 @@ export const generatePublicLinks = (usernames, count, category_id) => {
         propertyName: 'public_links',
         value: public_links
     }))
+
+    const usedUsernames = shuffledAndUnusedUsers.map(user => user.username)
+    store.dispatch(markUsedUsers(usedUsernames))
 
     return public_links;
 }
@@ -128,12 +134,13 @@ const getUsernames = async () => {
       console.error("get usernames:", error);
     });
 
-    
-    // store.dispatch(setUserProperty({
-    //     propertyName: 'usernames',
-    //     value: usernames
-    // }))
+    // console.log("usernames", usernames)
 
-    return usernames;
+    let userObjects = usernames.map(username => {
+        return { username: username, isUsed: false };
+      });
+
+
+    return userObjects;
 }
 

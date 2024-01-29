@@ -16,7 +16,7 @@ import CreateCategoryForm from "../component/chat/forms/CreateCategoryForm";
 import { createPublicRoom, watchChats, watchNewPublicRoom, watchPublicChats } from "../services/chatRepository";
 import MasterLinkView from "../component/chat/forms/MasterLinkPopup";
 import CreateMasterLink from "../component/chat/forms/CreateMasterLink";
-import { watchMasterLink } from "../services/masterLinkRepository";
+import { getUsedUsernames, watchMasterLink } from "../services/masterLinkRepository";
 import SetPublicRoomNameForm from "../component/chat/forms/SetPublicRoomNameForm";
 
 const ChatPage = () => {
@@ -71,6 +71,7 @@ const ChatPage = () => {
       console.log(workspace_id, user_id)
       if(workspace_id && user_id){
         getUserServers();
+        getUsedUsernames();
       }
     }, [user_id, workspace_id])
 

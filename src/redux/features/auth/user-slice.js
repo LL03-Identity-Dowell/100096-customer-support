@@ -46,9 +46,17 @@ export const userSlice = createSlice({
             state.usernames = data?.usernames;
             state.workspace_id = data.org_id;
             state.product = data.product;
+        },
+        markUsedUsers(state, action) {
+          let usedUsernames = action.payload
+          state.usernames.forEach(user => {
+            if(usedUsernames.includes(user.username)) {
+              user.isUsed = true;
+            }
+          })
         }
     }
 })
 
-export const {setUserProperty, setUser} = userSlice.actions;
+export const {setUserProperty, setUser, markUsedUsers} = userSlice.actions;
 export default userSlice.reducer;
