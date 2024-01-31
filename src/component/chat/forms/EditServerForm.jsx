@@ -27,10 +27,10 @@ const EditServerForm = ({toggleModals, rightClickedServer}) => {
         setIsSubmitted(true);
         const data = {
             name: _data?.name,
-            member_list: [],
-            channels: [],
-            events: [],
-            owner: user_id,
+            // member_list: [],
+            // channels: [],
+            // events: [],
+            // owner: user_id,
             server_id: rightClickedServer.id,
             created_at: Date.now()
         }

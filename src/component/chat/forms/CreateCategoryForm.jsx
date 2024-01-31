@@ -31,7 +31,7 @@ const CreateCategoryForm = ({toggleModals}) => {
             const data = {
                 name: _data?.name,
                 rooms: [],
-                member_list: [],
+                member_list: [user_id],
                 private: _data?.privateChannel,
                 server_id,
                 created_at: Date.now()

@@ -16,6 +16,7 @@ const schema = yup.object().shape({
 
 const CreateChannelForm = ({toggleModals}) => {
 
+    const {user_id} = useSelector((state) => state.user);
     const server_id = useSelector((state) => state.channels.server_id);
     const serverChannels = useSelector((state) => {
         const serverId = state.channels.server_id;
@@ -35,7 +36,7 @@ const CreateChannelForm = ({toggleModals}) => {
             type: _data?.channelType,
             private: _data?.privateChannel,
             server: server_id,
-            member_list: [],
+            member_list: [user_id],
             created_at: Date.now()
         }
         createChannel(data);

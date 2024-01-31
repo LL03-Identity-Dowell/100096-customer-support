@@ -24,7 +24,7 @@ const AddServerForm = ({toggleModals}) => {
         setIsSubmitted(true);
         const data = {
             name: _data?.name,
-            member_list: [],
+            member_list: [user_id],
             channels: [],
             events: [],
             owner: user_id,
