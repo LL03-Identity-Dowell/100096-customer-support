@@ -65,7 +65,7 @@ export const categorySlice = createSlice({
 
         addRoom(state, action){
             let data = action.payload;
-            console.log("new room", data)
+            // console.log("new room incoming", data)
             if(data.status == 'success') {
                 let category_id = data.data.category;
                 let server_id = data.data.server;

@@ -74,14 +74,16 @@ export const chatSlice = createSlice({
             let data = action.payload.data;
             let room_id = data?.data?.room_id
             let message = data?.data
-            let value  = false
             
             if(data.status == 'success') {
+                if(!state[room_id]) {
+                    state[room_id] = {}
+                }
                 if(!state[room_id]?.messages) {
                     state[room_id]["messages"] = []
                 }
                 state[room_id]?.messages.push(message)
-                state[room_id]["isSendingMessage"] = value;
+                state[room_id]["isSendingMessage"] = false;
             }else {
                 toast.error("Message Not Sent! Try Again!")
             }
