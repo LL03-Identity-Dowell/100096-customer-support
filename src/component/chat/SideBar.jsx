@@ -11,8 +11,8 @@ import { IoAddSharp } from "react-icons/io5";
 import CustomContextMenu from "./CustomContextMenu";
 import { deleteServer } from "../../services/serverRepository";
 import { getServerCategory } from "../../services/catagoryRepository";
-import { CiCircleChevDown } from "react-icons/ci";
-import { CiCircleChevUp } from "react-icons/ci";
+import { IoChevronUpCircle } from "react-icons/io5";
+import { IoChevronDownCircle } from "react-icons/io5";
 import SideNav from "./SideNav";
 import { joinPublicRoom } from "../../services/chatRepository";
 import { setCategoryId } from "../../redux/features/chat/category-slice";
@@ -28,6 +28,7 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
   })
   const [activeBorder, setActiveBorder] = useState(-1);
   const [contextMenuPosition, setContextMenuPosition] = useState(null);
+  const [openCategories, setOpenCategories] = useState({});
 
   useEffect(() => {
     const server = servers?.filter((server) => server.id == server_id)
@@ -35,6 +36,15 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
       setServeName(server[0]?.name)
     }
   }, [server_id])
+
+  useEffect(() => {
+    const initialOpenState = {};
+    categoryServer?.categories?.forEach(({ _id: category_id }) => {
+      initialOpenState[category_id] = true;
+    });
+    setOpenCategories(initialOpenState);
+  }, [categoryServer?.categories]);
+
 
   const handleServerClick = (serverId, index) => {
     setActiveBorder(index)
@@ -70,6 +80,13 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
       category_id: id
     }))
   }
+
+  const handleToggleCategory = (category_id) => {
+    setOpenCategories((prevOpenCategories) => ({
+      ...prevOpenCategories,
+      [category_id]: !prevOpenCategories[category_id],
+    }));
+  };
   
   return (
     <div className="flex">
@@ -88,7 +105,11 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
         <div className={`flex flex-col gap-4 pt-7 bg-white rounded-lg px-4 overflow-x-hidden overflow-y-auto`}>
           <div className="flex items-center justify-between">
             <h1 className="font-bold capitalize">{serverName}</h1>
-             <IoAddSharp  className="w-5 h-5 cursor-pointer" onClick={() => toggleModals('categoryModal', true)}/>
+            {
+              server_id && (
+               <IoAddSharp  className="w-5 h-5 cursor-pointer" onClick={() => toggleModals('categoryModal', true)}/>
+              )
+            }
           </div>
 
           <div className="max-w-md mx-auto px-2 flex items-center bg-gray-200 rounded-sm">
@@ -118,19 +139,34 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
                       alt={`User ${index}`}
                     />
                     <p className="text-left text-sm font-semibold">{name} </p>
-                    <CiCircleChevDown className="text-black font-bold w-10"/>
+                    <button
+                     onClick={() => handleToggleCategory(category_id)}
+                    >
+                      {
+                        openCategories[category_id] ? (
+                          <IoChevronUpCircle className="text-black font-bold text-xl"/>
+                          ) : (
+                          <IoChevronDownCircle className="text-black font-bold text-xl"/>
+                          )
+                      }
+                    </button>
                     <FaStaylinked onClick={() => handleMasterLink(category_id)} className="w-6 cursor-pointer"/>
+
                   </div>
 
-                  <div className="pl-2 flex flex-col items-center space-y-2" >
-                      {
-                        rooms?.map((id, index) => (
-                          <button key={index} className="text-lg p-2 shadow-lg bg-slate-300" onClick={() => {handleJoinRoom(id)}}>
-                            <span>{id}</span>
-                          </button>
-                        ))
-                      }
-                  </div>
+                  {
+                    openCategories[category_id] && (
+                        <div className={`pl-2 flex flex-col items-center space-y-2 transition-all ${openCategories[category_id] ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0'}`} >
+                        {
+                          rooms?.map((id, index) => (
+                            <button key={index} className="text-lg p-2 shadow-lg bg-slate-300" onClick={() => {handleJoinRoom(id)}}>
+                              <span>{id}</span>
+                            </button>
+                          ))
+                        }
+                      </div>
+                    )
+                  }
                 </div>
               ))
             )

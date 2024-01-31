@@ -43,7 +43,6 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
       setChatInput('');
     }
   }
-  
 
   return (
     <div className={`ml-3 flex flex-col max-h-screen w-full ${isOpen && 'hidden md:flex'}`}>
@@ -87,6 +86,10 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
           ) : !room_id ? (
             <p className="text-3xl font-light text-center h-full flex items-center justify-center">
               Please Select a room to chat in!
+            </p>
+          ) : messages.messages?.length == 0 || !messages?.messages ? (
+            <p className="text-3xl font-light text-center h-full flex items-center justify-center">
+              Start Chatting!
             </p>
           ) : (
             <div className="flex flex-col space-y-2 h-full justify-end mt-auto">

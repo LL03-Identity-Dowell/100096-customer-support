@@ -18,6 +18,7 @@ const handleApiResult = (state, action) => {
     state.isError = false;
     state.error = "";
   } else {
+    console.log("data", data)
     toast.error(`servers ${data.data}`)
     state.isLoading = false;
     state.isError = true;
@@ -43,8 +44,7 @@ export const serversSlice = createSlice({
       state.success = action.payload;
     },
     addServer(state, action) {
-      handleApiResult(state, action);
-    const data = action.payload.data;
+      const data = action.payload.data;
       if (data.status === "success") {
         const server_name = action.payload.name;
         state.servers.push({
@@ -52,18 +52,21 @@ export const serversSlice = createSlice({
           id: data.data.inserted_id,
         });
       }
+      action.payload = data;
+      handleApiResult(state, action);
     },
 
     setDeleteServer(state, action) {
-      handleApiResult(state, action);
       const data = action.payload.data;
-        if(data.status == 'success') {
-            const deletedServerId = action.payload.serverId;
-            state.servers = state.servers.filter(
-              (server) => server.id !== deletedServerId
-            );
-            toast.success("Server Deleted!")
-        }
+      if(data.status == 'success') {
+          const deletedServerId = action.payload.serverId;
+          state.servers = state.servers.filter(
+            (server) => server.id !== deletedServerId
+          );
+          toast.success("Server Deleted!")
+      }      
+      action.payload = data
+      handleApiResult(state, action);
     },
 
     setUpdatedServer(state, action) {

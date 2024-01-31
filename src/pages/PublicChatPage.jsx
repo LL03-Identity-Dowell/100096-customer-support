@@ -68,12 +68,9 @@ const PublicChatPage = () => {
         const {publicLinkId, categoryId, orgId, product, api_key} = paramsReq;
 
           createPublicRoom({
-            // public_link_id : publicLinkId,
             public_link_id: publicLinkId,
-            // category_id: categoryId,
             category_id: categoryId,
             workspace_id: orgId,
-            // workspace_id: '6385c0f18eca0fb652c94558',
             product,
             api_key,
             created_at: Date.now()        
@@ -132,7 +129,11 @@ const PublicChatPage = () => {
               <p className="text-3xl font-light text-center h-full flex items-center justify-center">
                 Room not created!
               </p>
-            ) : (
+            ) : !messages || messages.messages?.length == 0 || !messages?.messages ? (
+              <p className="text-3xl font-light text-center h-full flex items-center justify-center">
+                Start Chatting!
+              </p>
+            ):(
               <div className="flex flex-col space-y-2 h-full justify-end mt-auto">
                 {messages?.messages?.map((message, index) => (
                   <ChatMessage key={index} message={message} />

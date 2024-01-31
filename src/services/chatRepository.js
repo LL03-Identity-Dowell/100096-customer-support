@@ -42,6 +42,9 @@ export const sendMessage = (data) => {
     socketInstance.emit('public_message_event', addCommonProps(data))
 }
 
+export const autoJoinRoom = () => {
+    socketInstance.emit('auto_join_room', addCommonProps());
+}
 
 
 export const watchChats = () => {
@@ -94,6 +97,12 @@ export const watchNewPublicRoom = () => {
     socketInstance.on('new_public_room', (data) => {
         console.log('new_public_room', data)
         store.dispatch(addRoom(data)); 
-
+        // join the room
+        if(data.status == 'success') {
+            let room_id = data.data._id;
+            socketInstance.emit('public_join_room', addCommonProps({
+                room_id
+            }));
+        }
     })
 }

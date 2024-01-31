@@ -13,7 +13,7 @@ import { watchChannels } from "../services/channelRepository";
 import EditServerForm from "../component/chat/forms/EditServerForm";
 import { watchCategory } from "../services/catagoryRepository";
 import CreateCategoryForm from "../component/chat/forms/CreateCategoryForm";
-import { createPublicRoom, watchChats, watchNewPublicRoom, watchPublicChats } from "../services/chatRepository";
+import { autoJoinRoom, createPublicRoom, watchChats, watchNewPublicRoom, watchPublicChats } from "../services/chatRepository";
 import MasterLinkView from "../component/chat/forms/MasterLinkPopup";
 import CreateMasterLink from "../component/chat/forms/CreateMasterLink";
 import { watchMasterLink } from "../services/masterLinkRepository";
@@ -72,6 +72,7 @@ const ChatPage = () => {
       console.log(workspace_id, user_id)
       if(workspace_id && user_id){
         getUserServers();
+        autoJoinRoom();
         // getUsedUsernames();
       }
     }, [user_id, workspace_id])

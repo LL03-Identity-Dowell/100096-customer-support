@@ -44,7 +44,7 @@ const AddServerForm = ({toggleModals}) => {
         <div className="py-3 px-3 lg:px-8 bg-white dark:bg-[#080F18] shadow-lg dark:shadow-gray-800 rounded-md w-full">
             {
                 isError && (
-                    <p className="mt-2 text-xs text-red-600 dark:text-red-500">{error}</p>
+                    <p className="mt-2 text-xs text-red-600 dark:text-red-500">{error.toString()}</p>
                 )
             }
             <h5 className='mt-6 text-xl font-semibold text-black dark:text-white'>Create Server</h5>

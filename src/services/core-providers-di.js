@@ -188,8 +188,6 @@ const markUserNamesUsedAPI = (usernames) => {
         portfolio_code: store.getState().user.portfolio_code,
       };
 
-    console.log("usernames data", data)
-
     axios.post(baseurl, data)
       .then(response => {
         console.log('Set usernames used response:', response.data);
