@@ -92,7 +92,7 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
               Start Chatting!
             </p>
           ) : (
-            <div className="flex flex-col space-y-2 h-full justify-end mt-auto">
+            <div className="flex flex-col space-y-2 justify-end min-h-full">
               {messages?.messages.map((message, index) => (
                 <ChatMessage key={index} message={message} />
               ))}

@@ -18,6 +18,7 @@ import { joinPublicRoom } from "../../services/chatRepository";
 import { setCategoryId } from "../../redux/features/chat/category-slice";
 
 const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRightClickedServer }) => {
+  const currentRoomId = useSelector((state) => state.chats.room_id)
   const {servers, isLoading, isError, error} = useSelector((state) => state.servers)
   const [serverName, setServeName] = useState('');
   const dispatch = useDispatch()
@@ -159,7 +160,7 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
                         <div className={`pl-2 flex flex-col items-center space-y-2 transition-all ${openCategories[category_id] ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0'}`} >
                         {
                           rooms?.map((id, index) => (
-                            <button key={index} className="text-lg p-2 shadow-lg bg-slate-300" onClick={() => {handleJoinRoom(id)}}>
+                            <button key={index} className={`text-lg p-2 shadow-lg ${id == currentRoomId ? 'bg-red-400' : 'bg-slate-300'}`} onClick={() => {handleJoinRoom(id)}}>
                               <span>{id}</span>
                             </button>
                           ))
