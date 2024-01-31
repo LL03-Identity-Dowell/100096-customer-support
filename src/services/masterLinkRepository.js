@@ -14,9 +14,9 @@ export const createMasterLink = (data) => {
     }))
 }
 
-export const getUsedUsernames = () => {
-    socketInstance.emit('get_used_usernames', addCommonProps())
-}
+// export const getUsedUsernames = () => {
+//     socketInstance.emit('get_used_usernames', addCommonProps())
+// }
 
 
 export const watchMasterLink = () => {
@@ -26,9 +26,9 @@ export const watchMasterLink = () => {
         if(data?.operation === 'create_master_link') {
             store.dispatch(setMasterLink(data))         
         }else if(data?.operation === 'get_used_usernames') {
-            if(data.status === 'success') {
-                store.dispatch(markUsedUsers(data?.data[0]?.["public_username"]))
-            }
+            // if(data.status === 'success') {
+            //     store.dispatch(markUsedUsers(data?.data[0]?.["public_username"]))
+            // }
         }
     })
 }

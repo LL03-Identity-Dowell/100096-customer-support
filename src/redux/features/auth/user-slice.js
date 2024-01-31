@@ -7,7 +7,9 @@ const _initialState = {
     session_id: null,
     workspace_id: null,
     api_key: null,
-    product: 'customer_support'
+    product: 'customer_support',
+    username: '',
+    portfolio_code: null,
 }
 
 const handleApiResult = (state, action) => {
