@@ -1,6 +1,5 @@
 import { FaMessage, FaStaylinked } from "react-icons/fa6";
-import { faL, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IoIosSearch } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileAvatar from "../common/ProfileAvatar";
@@ -120,7 +119,7 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
               placeholder="Find a chat"
             />
 
-            <FontAwesomeIcon icon={faSearch} className="text-gray-400 pr-1" />
+            <IoIosSearch className="text-gray-400 pr-1" />
           </div>
           {
             categoryServer?.isLoading ? (
