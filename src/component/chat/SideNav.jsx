@@ -3,9 +3,11 @@ import ServerButtonsShimmer from "./loading/ServersLoading";
 import { FaMessage } from "react-icons/fa6";
 import ProfileAvatar from "../common/ProfileAvatar";
 import { IoMdSettings } from "react-icons/io";
-
+import NotificationIcon from "../common/NotificationIcon";
+import { useSelector } from "react-redux";
 
 const SideNav = ({handleContextMenu, handleServerClick, setActiveBorder, activeBorder, isLoading, servers, toggleModals}) => {
+  const notifications = useSelector((state) => state.notifications)
 
     return (
         <div className=" h-screen py-4 px-[15px]">
@@ -29,9 +31,10 @@ const SideNav = ({handleContextMenu, handleServerClick, setActiveBorder, activeB
             isLoading ? (
                 <ServerButtonsShimmer />
             ) : (
-                servers?.map(({name, id}, index) => (
-                  <button onContextMenu={(e) => handleContextMenu(e, id, name)}  className="relative h-[40px]" id={id} key={index} onClick={() => {handleServerClick(id, index)}}>
+                servers?.map(({name, id: server_id}, index) => (
+                  <button onContextMenu={(e) => handleContextMenu(e, server_id, name)}  className="relative h-[40px]" server_id={server_id} key={index} onClick={() => {handleServerClick(server_id, index)}}>
                     <ProfileAvatar fullName={name} />
+                    <NotificationIcon notificationCount={notifications?.[server_id]?.count}/>
                     {activeBorder === index && (
                       <p className=" w-[6px] h-[80%] bg-green-500 absolute left-[-15px] rounded-r-[100px]  top-[2px]"></p>
                     )}

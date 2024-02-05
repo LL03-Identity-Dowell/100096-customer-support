@@ -10,6 +10,7 @@ const _initialState = {
     product: 'customer_support',
     username: '',
     portfolio_code: null,
+    isLoggedIn: false
 }
 
 const handleApiResult = (state, action) => {

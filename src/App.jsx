@@ -9,16 +9,23 @@ import LoginPage from "./pages/LoginPage";
 import CircularLoader from "./component/common/CircularLoader";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from "react-redux";
+import { setUserProperty } from "./redux/features/auth/user-slice";
 
 
 export default function App() {
   const [loggedIn, publicChat] = useDowellLogin();
   const [fetchFinished, setFetchFinished] = useState(false);
-
+  const dispatch = useDispatch()
   useEffect(() => {
     const getReq = async () => {
       if(loggedIn){
        const { product, api_key, org_id } = await getAuthReq();
+       dispatch(setUserProperty({
+        propertyName: 'isLoggedIn',
+        value: true
+       }))
+       
     }
       setFetchFinished(true);
     };

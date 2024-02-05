@@ -18,6 +18,7 @@ export const cleanupSocket = () => {
     socketInstance.off('public_message_response');
     socketInstance.off('master_link_response');
     socketInstance.off('new_public_room')
+    socketInstance.off('auto_join_response')
 }
 
 export const getAuthReq = async () => {
@@ -27,7 +28,7 @@ export const getAuthReq = async () => {
     let user_id = getUserId();
     let usernames = await getUsernames();
     
-    console.log("usernames", usernames)
+    // console.log("usernames", usernames)
     setUserData({product, org_id, api_key, user_id, usernames});
 
     return {

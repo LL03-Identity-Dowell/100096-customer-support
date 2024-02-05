@@ -15,8 +15,10 @@ import { IoChevronDownCircle } from "react-icons/io5";
 import SideNav from "./SideNav";
 import { joinPublicRoom } from "../../services/chatRepository";
 import { setCategoryId } from "../../redux/features/chat/category-slice";
+import NotificationIcon from "../common/NotificationIcon";
 
 const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRightClickedServer }) => {
+  const notifications = useSelector((state) => state.notifications)
   const currentRoomId = useSelector((state) => state.chats.room_id)
   const {servers, isLoading, isError, error} = useSelector((state) => state.servers)
   const [serverName, setServeName] = useState('');
@@ -131,7 +133,7 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
                 <div key={index} className="mb-2">
                   <div
                     id={category_id}
-                    className="w-full flex gap-3 items-center justify-between border-2 border-black/10 p-2"
+                    className="relative w-full flex gap-3 items-center justify-between border-2 border-black/10 p-2"
                   >
                     <img
                       src="avatar.jpg"
@@ -151,7 +153,7 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
                       }
                     </button>
                     <FaStaylinked onClick={() => handleMasterLink(category_id)} className="w-6 cursor-pointer"/>
-
+                    <NotificationIcon notificationCount={notifications?.[server_id]?.[category_id]?.count}/>
                   </div>
 
                   {
@@ -159,8 +161,9 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
                         <div className={`pl-2 flex flex-col items-center space-y-2 transition-all ${openCategories[category_id] ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0'}`} >
                         {
                           rooms?.map((id, index) => (
-                            <button key={index} className={`text-lg p-2 shadow-lg ${id == currentRoomId ? 'bg-red-400' : 'bg-slate-300'}`} onClick={() => {handleJoinRoom(id)}}>
+                            <button key={index} className={`relative text-lg p-2 shadow-lg ${id == currentRoomId ? 'bg-red-400' : 'bg-slate-300'}`} onClick={() => {handleJoinRoom(id)}}>
                               <span>{id}</span>
+                              <NotificationIcon notificationCount={notifications?.[server_id]?.[category_id]?.[id]}/>
                             </button>
                           ))
                         }

@@ -84,8 +84,8 @@ export const chatSlice = createSlice({
                 }
                 state[room_id]?.messages.push(message)
                 state[room_id]["isSendingMessage"] = false;
-                if(state.room_id == room_id) {
-                    toast.success(`New Message: ${message} in Room ${room_id}`);
+                if(state.room_id != room_id) {
+                    toast.success(`New Message: ${message?.message_data} in Room ${room_id}`);
                 }
             }else {
                 toast.error("Message Not Sent! Try Again!")

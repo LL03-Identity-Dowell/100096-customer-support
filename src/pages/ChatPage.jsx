@@ -19,6 +19,7 @@ import CreateMasterLink from "../component/chat/forms/CreateMasterLink";
 import { watchMasterLink } from "../services/masterLinkRepository";
 import SetPublicRoomNameForm from "../component/chat/forms/SetPublicRoomNameForm";
 import { ToastContainer } from "react-toastify";
+import { watchNotifications } from "../services/notificationRepository";
 
 const ChatPage = () => {
     const [isOpen, setIsOpen] = useState(true);
@@ -62,6 +63,7 @@ const ChatPage = () => {
         watchMasterLink();
         watchPublicChats();
         watchNewPublicRoom();
+        watchNotifications();
 
       return () => {
         cleanupSocket();
