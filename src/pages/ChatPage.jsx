@@ -111,7 +111,6 @@ const ChatPage = () => {
           setIsOpen={setIsOpen}
           handleSideBarToggle={handleSideBarToggle}
         />
-
         {
           modals.showAddServerModal && (
             <PopupModal toggleModals={toggleModals} modalName='showAddServerModal'>
@@ -119,7 +118,6 @@ const ChatPage = () => {
             </PopupModal>
           )
         }
-
         {
           modals.channelModal && (
             <PopupModal toggleModals={toggleModals} modalName='channelModal'>
@@ -127,7 +125,6 @@ const ChatPage = () => {
             </PopupModal>
           )
         }
-
         {
           modals.editServerModal && (
           <PopupModal toggleModals={toggleModals} modalName='editServerModal'>
@@ -135,7 +132,6 @@ const ChatPage = () => {
           </PopupModal>
           )
         }
-
         {
           modals.categoryModal && (
             <PopupModal toggleModals={toggleModals} modalName='categoryModal'>
@@ -143,7 +139,6 @@ const ChatPage = () => {
             </PopupModal>
           )
         }
-
         {
           modals.masterLinkView && (
             <PopupModal toggleModals={toggleModals} modalName='masterLinkView'>

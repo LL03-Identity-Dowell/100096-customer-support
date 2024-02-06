@@ -49,6 +49,9 @@ export const notificationSlice = createSlice({
             let data = action.payload;
             let notifications = data.data;
 
+            if(!notifications || notifications.length == 0) {
+                return
+            }
             let currentRoomId = notifications[0]?.['room_id'];
             let currentCategoryId = state.room_category_map[currentRoomId];
             let currentServerId = state.category_server_map[currentCategoryId];
@@ -61,30 +64,33 @@ export const notificationSlice = createSlice({
         },
 
         AddNotification(state, action) {
-
             let data = action.payload;
             let notifications = data.data;
-
+            
             let currentRoomId = notifications?.room_id;
             let currentCategoryId = state.room_category_map[currentRoomId];
             let currentServerId = state.category_server_map[currentCategoryId];
-
-            // update notifications
-            if(!state[currentServerId]) {
+            
+            // update notifications        
+            if (!state[currentServerId]) {
+                state[currentServerId] = {};
                 state[currentServerId]['count'] = 0;
             }
+        
             state[currentServerId]['count'] += 1;
-
-            if(!state[currentServerId][currentCategoryId]) {
+        
+            if (!state[currentServerId][currentCategoryId]) {
+                state[currentServerId][currentCategoryId] = {};
                 state[currentServerId][currentCategoryId]['count'] = 0;
             }
+        
             state[currentServerId][currentCategoryId]['count'] += 1;
-
-            if(!state[currentServerId][currentCategoryId][currentRoomId]){
-                state[currentServerId][currentCategoryId][currentRoomId]['count'] = 0;
+        
+            if (!state[currentServerId][currentCategoryId][currentRoomId]) {
+                state[currentServerId][currentCategoryId][currentRoomId] = 0;
             }
+            
             state[currentServerId][currentCategoryId][currentRoomId] += 1;
-
         }
     }
 })

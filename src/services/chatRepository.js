@@ -62,7 +62,7 @@ export const watchChats = () => {
                 room_id: roomId
             }))
         } else if(data?.operation === 'send_message'){
-            if(data.status == 'success' && store.getState().user.isLoggedIn) {
+            if(data.status == 'success' && store.getState().user.isLoggedIn && store.getState().user.user_id != data?.data?.author) {
                 store.dispatch(AddNotification(data))
             }
             store.dispatch(addMessage({
