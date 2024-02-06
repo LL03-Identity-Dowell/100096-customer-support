@@ -91,9 +91,24 @@ export const notificationSlice = createSlice({
             }
             
             state[currentServerId][currentCategoryId][currentRoomId] += 1;
+        },
+
+        AddNewNotificationRoom(state, action) {
+
+            if(data.status == 'success') {
+                let category_id = data.data.category;
+                let server_id = data.data.server;
+                let room_id = data.data._id;
+    
+                if(!state[server_id]){
+                    state[server_id] = {}
+                }         
+
+                state[server_id][category_id][room_id] = 0
+            }
         }
     }
 })
 
-export const {setNotifications, setRoomRead, AddNotification} = notificationSlice.actions;
+export const {setNotifications, setRoomRead, AddNotification, AddNewNotificationRoom} = notificationSlice.actions;
 export default notificationSlice.reducer;

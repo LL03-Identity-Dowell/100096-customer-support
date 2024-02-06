@@ -1,6 +1,6 @@
 import { addRoom } from "../redux/features/chat/category-slice";
 import { addMessage, setChatProperty, setChatRoomId, setChats, setPublicChatRoom, setPublicRoomProperty } from "../redux/features/chat/chat-slice"
-import { AddNotification, setRoomRead } from "../redux/features/chat/notification-slice";
+import { AddNewNotificationRoom, AddNotification, setRoomRead } from "../redux/features/chat/notification-slice";
 import { store } from "../redux/store"
 import { addCommonProps, socketInstance } from "./core-providers-di"
 
@@ -105,6 +105,7 @@ export const watchNewPublicRoom = () => {
     socketInstance.on('new_public_room', (data) => {
         console.log('new_public_room', data)
         store.dispatch(addRoom(data)); 
+        store.dispatch(AddNewNotificationRoom(data));
         // join the room
         // if(data.status == 'success') {
         //     let room_id = data.data._id;
