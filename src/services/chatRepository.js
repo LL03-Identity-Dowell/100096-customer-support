@@ -1,4 +1,4 @@
-import { addRoom } from "../redux/features/chat/category-slice";
+import { addRoom, setCategoriesProperty, setRoomName, setRoomNameSuccess } from "../redux/features/chat/category-slice";
 import { addMessage, setChatProperty, setChatRoomId, setChats, setPublicChatRoom, setPublicRoomProperty } from "../redux/features/chat/chat-slice"
 import { AddNewNotificationRoom, AddNotification, setRoomRead } from "../redux/features/chat/notification-slice";
 import { store } from "../redux/store"
@@ -8,11 +8,17 @@ import { addCommonProps, socketInstance } from "./core-providers-di"
 
 let roomId;
 let newMessage;
+let editRoomNameId;
 export const createPublicRoom = (data) => {
     socketInstance.emit('create_public_room', data);
 }
 
 export const setPublicRoomDisplayName = (data) => {
+    editRoomNameId = data.room_id;
+    store.dispatch(setRoomNameSuccess({
+        propertyName: 'roomNameSuccess',
+        value: false,
+    }))
     socketInstance.emit('set_public_room_display_name', addCommonProps({
         ...data
     }))
@@ -95,6 +101,15 @@ export const watchPublicChats = () => {
             }))
             store.dispatch(setChatRoomId({
                 room_id: data.data._id
+            }))
+        }else if(data.operation == 'set_display_name'){
+            store.dispatch(setRoomNameSuccess({
+                propertyName: 'roomNameSuccess',
+                value: true,
+            }))
+            store.dispatch(setRoomName({
+                data,
+                room_id: editRoomNameId
             }))
         }
     })

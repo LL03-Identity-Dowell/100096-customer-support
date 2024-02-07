@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import ToastChatMessage from "../../../component/common/ToastChatMessage";
-import NonJSXComponent from "../../../component/common/NonJsxComponent";
 
 const _initialState = {
     room_id : null,

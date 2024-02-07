@@ -16,8 +16,10 @@ import SideNav from "./SideNav";
 import { joinPublicRoom } from "../../services/chatRepository";
 import { setCategoryId } from "../../redux/features/chat/category-slice";
 import NotificationIcon from "../common/NotificationIcon";
+import { FaEdit } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
 
-const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRightClickedServer }) => {
+const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRightClickedServer, setEditRoomNameId }) => {
   const notifications = useSelector((state) => state.notifications)
   const currentRoomId = useSelector((state) => state.chats.room_id)
   const {servers, isLoading, isError, error} = useSelector((state) => state.servers)
@@ -161,8 +163,9 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
                         <div className={`pl-2 flex flex-col items-center space-y-2 transition-all ${openCategories[category_id] ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0'}`} >
                         {
                           rooms?.map(({_id: id, display_name}, index) => (
-                            <button key={index} className={`relative text-lg p-2 shadow-lg ${id == currentRoomId ? 'bg-red-400' : 'bg-slate-300'}`} onClick={() => {handleJoinRoom(id)}}>
+                            <button key={index} className={`w-full relative text-lg p-2 shadow-lg flex items-center justify-between ${id == currentRoomId ? 'bg-red-400' : 'bg-slate-300'}`} onClick={() => {handleJoinRoom(id)}}>
                               <span>{display_name || id}</span>
+                              <MdEdit className="w-4 h-4 ml-1" onClick={() => {toggleModals('setDisplayNameModal', true); setEditRoomNameId(id)}}/>
                               <NotificationIcon notificationCount={notifications?.[server_id]?.[category_id]?.[id]}/>
                             </button>
                           ))

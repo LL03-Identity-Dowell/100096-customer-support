@@ -10,7 +10,7 @@ const schema = yup.object().shape({
     name:  yup.string().required("Please enter your valid display name").min(5, "Display name should be longer than 5 characters"),
 })
 
-const SetPublicRoomNameForm = ({toggleModals}) => {
+const SetPublicRoomNameForm = ({toggleModals, room_id}) => {
 
     const {user_id} = useSelector((state) => state.user);
     const {success, isError, error} = useSelector((state) => state.chats);
@@ -22,12 +22,8 @@ const SetPublicRoomNameForm = ({toggleModals}) => {
     const onSubmit = (_data) => {
         setIsSubmitted(true);
         const data = {
-            name: _data?.name,
-            member_list: [],
-            channels: [],
-            events: [],
-            owner: user_id,
-            created_at: Date.now()
+            room_id,
+            display_name: _data?.name,
         }
         setPublicRoomDisplayName(data);
     }
@@ -67,7 +63,7 @@ const SetPublicRoomNameForm = ({toggleModals}) => {
                     >
                     {isSubmitted ? (
                         <div className="flex justify-center items-center">
-                        <div className="animate-spin h-5 w-5 border-t-2 border-[#0B141F] rounded-full"></div>
+                            <div className="animate-spin h-5 w-5 border-t-2 border-[#0B141F] rounded-full"></div>
                         </div>
                     ) : (
                         'Submit'

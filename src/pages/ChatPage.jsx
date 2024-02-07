@@ -36,6 +36,7 @@ const ChatPage = () => {
       setDisplayNameModal: false,
     });
     const [rightClickedServer, setRightClickedServer] = useState(null);
+    const [editRoomNameId, setEditRoomNameId] = useState(null)
   
     const handleSideBarToggle = () => {
       setIsOpen(!isOpen);
@@ -104,6 +105,7 @@ const ChatPage = () => {
           toggleModals={toggleModals}
           setRightClickedServer={setRightClickedServer}
           rightClickedServer={rightClickedServer}
+          setEditRoomNameId={setEditRoomNameId}
         />
         <ChatSection
           toggleModals={toggleModals}
@@ -156,7 +158,7 @@ const ChatPage = () => {
         {
           modals.setDisplayNameModal && (
             <PopupModal toggleModals={toggleModals} modalName='setDisplayNameModal'>
-              <SetPublicRoomNameForm toggleModals={toggleModals}/>
+              <SetPublicRoomNameForm toggleModals={toggleModals} room_id={editRoomNameId}/>
             </PopupModal>
           )
         }
