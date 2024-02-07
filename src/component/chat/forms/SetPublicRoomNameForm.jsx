@@ -13,6 +13,7 @@ const schema = yup.object().shape({
 const SetPublicRoomNameForm = ({toggleModals, room_id}) => {
 
     const {user_id} = useSelector((state) => state.user);
+    const {roomNameSuccess} = useSelector((state) => state.categories)
     const {success, isError, error} = useSelector((state) => state.chats);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const { register, handleSubmit, formState: {errors} } = useForm({
@@ -29,10 +30,10 @@ const SetPublicRoomNameForm = ({toggleModals, room_id}) => {
     }
 
     useEffect(() => {
-        if(success && isSubmitted) {
+        if(roomNameSuccess && isSubmitted) {
             toggleModals('setDisplayNameModal', false);
         }
-    }, [isSubmitted, success])
+    }, [isSubmitted, roomNameSuccess])
 
     return (
         <div className="py-3 px-3 lg:px-8 bg-white dark:bg-[#080F18] shadow-lg dark:shadow-gray-800 rounded-md w-full">

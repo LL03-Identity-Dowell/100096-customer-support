@@ -123,20 +123,19 @@ export const categorySlice = createSlice({
             if(data.status == 'success') {
                 let name = data.data.display_name;
                 
+                let roomToUpdate = null;
+
                 if (state[state.server_id]?.categories) {
                     state[state.server_id].categories.forEach((category) => {
-                    if (category.rooms) {
-                        const roomIndex = category.rooms.findIndex(
-                        (room) => room._id === room_id
-                        );
-                        if (roomIndex !== -1) {
-                        state[state.server_id].categories[
-                            categoryIndex
-                        ].rooms[roomIndex].display_name = name;
+                        if (category.rooms) {
+                            const roomIndex = category.rooms.findIndex((room) => room._id === room_id);
+                            if (roomIndex !== -1) {
+                                roomToUpdate = category.rooms[roomIndex];
+                                category.rooms[roomIndex] = { ...roomToUpdate, display_name: name };
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
         }
         },
 
