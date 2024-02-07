@@ -83,7 +83,7 @@ export const categorySlice = createSlice({
                     if(!state[server_id].categories[categoryIndex].rooms){
                         state[server_id].categories[categoryIndex].rooms = []
                     }
-                    state[server_id].categories[categoryIndex].rooms.push(room_id);
+                    state[server_id].categories[categoryIndex].rooms.push({_id: room_id, display_name: null});
                 }
                 toast.success(`Room ${room_id} Created!`)
             }

@@ -160,9 +160,9 @@ const SideBar = ({ isOpen, setIsOpen, toggleModals, rightClickedServer, setRight
                     openCategories[category_id] && (
                         <div className={`pl-2 flex flex-col items-center space-y-2 transition-all ${openCategories[category_id] ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0'}`} >
                         {
-                          rooms?.map((id, index) => (
+                          rooms?.map(({_id: id, display_name}, index) => (
                             <button key={index} className={`relative text-lg p-2 shadow-lg ${id == currentRoomId ? 'bg-red-400' : 'bg-slate-300'}`} onClick={() => {handleJoinRoom(id)}}>
-                              <span>{id}</span>
+                              <span>{display_name || id}</span>
                               <NotificationIcon notificationCount={notifications?.[server_id]?.[category_id]?.[id]}/>
                             </button>
                           ))

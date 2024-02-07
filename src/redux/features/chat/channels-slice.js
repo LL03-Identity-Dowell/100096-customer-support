@@ -85,22 +85,7 @@ export const channelsSlice = createSlice({
             }
         }
 
-        
 
-        // createChannel(state, action) {
-        // },
-
-        // updateChannel(state, action){
-        // },
-
-        // deleteChannel(state, action){
-        // },
-        // addChannelMember(state, action){
-
-        // },
-        // deleteChannelMember(state, action) {
-
-        // }
     }
 })
 

@@ -54,6 +54,9 @@ export const notificationSlice = createSlice({
             }
             let currentRoomId = notifications[0]?.['room_id'];
             let currentCategoryId = state.room_category_map[currentRoomId];
+            if(!currentCategoryId) {
+                
+            }
             let currentServerId = state.category_server_map[currentCategoryId];
             let count = state[currentServerId][currentCategoryId][currentRoomId]
             
@@ -94,15 +97,24 @@ export const notificationSlice = createSlice({
         },
 
         AddNewNotificationRoom(state, action) {
+            let data = action.payload;
 
             if(data.status == 'success') {
                 let category_id = data.data.category;
                 let server_id = data.data.server;
                 let room_id = data.data._id;
-    
-                if(!state[server_id]){
-                    state[server_id] = {}
-                }         
+                  
+                if (!state[server_id]) {
+                    state[server_id] = {
+                        count: 0
+                    };
+                }
+        
+                if (!state[server_id][category_id]) {
+                    state[server_id][category_id] = {
+                        count: 0
+                    };
+                }
 
                 state[server_id][category_id][room_id] = 0
             }
