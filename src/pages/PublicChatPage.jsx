@@ -118,7 +118,7 @@ const PublicChatPage = () => {
      
         <section
           ref={scrollContainerRef}
-          className="relative h-[80%] flex-grow overflow-y-auto bg-white px-2 "
+          className="relative h-[80%] flex-grow overflow-y-auto bg-white px-2"
         >
           {
             publicRoomLoading || messages?.isLoading ? (
@@ -134,7 +134,7 @@ const PublicChatPage = () => {
                 Start Chatting!
               </p>
             ):(
-              <div className="flex flex-col space-y-2 h-full justify-end mt-auto">
+              <div className="flex flex-col space-y-2 min-h-full justify-end ">
                 {messages?.messages?.map((message, index) => (
                   <ChatMessage key={index} message={message} />
                 ))}

@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 const _initialState = {
     server_id : null,
     category_id: null,
-    roomNameSuccess: false
+    roomNameSuccess: false,
+    currRoomName: null
 }   
 const handleApiResult = (state, action) => {
     const data = action.payload.data;
@@ -144,10 +145,26 @@ export const categorySlice = createSlice({
             let value = action.payload.value;
 
             state[propertyName] = value
+        },
+
+        setCurrRoomName(state, action) {
+            let room_id = action.payload;
+            console.log("curr", room_id)
+            if (state[state.server_id]?.categories) {
+                state[state.server_id].categories.forEach((category) => {
+                    if (category.rooms) {
+                        const roomIndex = category.rooms.findIndex((room) => room._id === room_id);
+                        if (roomIndex !== -1) {
+                            state.currRoomName = category.rooms[roomIndex]?.display_name || null;
+                        }
+                    }
+                });
+            }
+
         }
     }
 })
 
 
-export const {setCategories, setCategoriesProperty, setCategoriesServerId, addCategory, setCategoryId, addRoom, setRoomName, setRoomNameSuccess} = categorySlice.actions;
+export const {setCategories, setCategoriesProperty, setCategoriesServerId, addCategory, setCategoryId, addRoom, setRoomName, setRoomNameSuccess, setCurrRoomName} = categorySlice.actions;
 export default categorySlice.reducer;

@@ -1,4 +1,4 @@
-import { addRoom, setCategoriesProperty, setRoomName, setRoomNameSuccess } from "../redux/features/chat/category-slice";
+import { addRoom, setCategoriesProperty, setCurrRoomName, setRoomName, setRoomNameSuccess } from "../redux/features/chat/category-slice";
 import { addMessage, setChatProperty, setChatRoomId, setChats, setPublicChatRoom, setPublicRoomProperty } from "../redux/features/chat/chat-slice"
 import { AddNewNotificationRoom, AddNotification, setRoomRead } from "../redux/features/chat/notification-slice";
 import { store } from "../redux/store"
@@ -60,6 +60,7 @@ export const watchChats = () => {
         // join a room
         if(data?.operation === 'join_public_room') {
             // set messages read
+            store.dispatch(setCurrRoomName(roomId))
             if(data.status == 'success') {
                 store.dispatch(setRoomRead(data))
             }

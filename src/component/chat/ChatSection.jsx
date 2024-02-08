@@ -20,6 +20,8 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
     const roomId = state.chats.room_id;
     return state.chats[roomId]
   })
+
+  const currRoomName = useSelector((state) => state.categories.currRoomName);
   const scrollContainerRef = useRef(null);
   const [chatInput, setChatInput] = useState("");
 
@@ -62,7 +64,7 @@ const ChatSection = ({ isOpen, setIsOpen, handleSideBarToggle }) => {
             className="w-10 md:w-16 rounded-full"
           />
           <div className="font-bold ml-3 mt-4 hidden md:block uppercase">
-            Support Team
+            {currRoomName || 'Support Team'}
           </div>
         </div>
 
