@@ -75,7 +75,7 @@ const PublicChatPage = () => {
             workspace_id: orgId,
             product,
             api_key,
-            link_id,
+            linkid: link_id,
             created_at: Date.now()        
           }) 
       }
