@@ -39,14 +39,16 @@ const PublicChatPage = () => {
         orgId: searchParams.get('org_id'),
         categoryId: searchParams.get('category_id'),
         product: searchParams.get('product'),
-        api_key: searchParams.get('api_key')
+        api_key: searchParams.get('api_key'),
+        link_id: searchParams.get('link_id')
       })
 
       dispatch(setUser(
         {user_id: searchParams.get('public_link_id'), 
         product: searchParams.get('product'), 
         api_key: searchParams.get('api_key'),
-        org_id: searchParams.get('org_id')
+        org_id: searchParams.get('org_id'),
+        link_id: searchParams.get('link_id')
       }))
 
       return () => {
@@ -63,9 +65,9 @@ const PublicChatPage = () => {
 
     useEffect(() => {
      
-      if(paramsReq?.publicLinkId && paramsReq?.categoryId && paramsReq?.orgId && paramsReq?.product && paramsReq?.api_key) {
+      if(paramsReq?.publicLinkId && paramsReq?.categoryId && paramsReq?.orgId && paramsReq?.product && paramsReq?.api_key && paramsReq?.link_id) {
 
-        const {publicLinkId, categoryId, orgId, product, api_key} = paramsReq;
+        const {publicLinkId, categoryId, orgId, product, api_key, link_id} = paramsReq;
 
           createPublicRoom({
             public_link_id: publicLinkId,
@@ -73,6 +75,7 @@ const PublicChatPage = () => {
             workspace_id: orgId,
             product,
             api_key,
+            link_id,
             created_at: Date.now()        
           }) 
       }

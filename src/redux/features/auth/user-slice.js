@@ -10,7 +10,8 @@ const _initialState = {
     product: 'customer_support',
     username: '',
     portfolio_code: null,
-    isLoggedIn: false
+    isLoggedIn: false,
+    link_id: null
 }
 
 const handleApiResult = (state, action) => {
@@ -49,6 +50,7 @@ export const userSlice = createSlice({
             state.usernames = data?.usernames;
             state.workspace_id = data.org_id;
             state.product = data.product;
+            state.link_id = data.link_id
         },
         markUsedUsers(state, action) {
           let usedUsernames = action.payload
