@@ -149,7 +149,6 @@ export const categorySlice = createSlice({
 
         setCurrRoomName(state, action) {
             let room_id = action.payload;
-            console.log("curr", room_id)
             if (state[state.server_id]?.categories) {
                 state[state.server_id].categories.forEach((category) => {
                     if (category.rooms) {
