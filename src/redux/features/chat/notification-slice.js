@@ -53,12 +53,18 @@ export const notificationSlice = createSlice({
                 return
             }
             let currentRoomId = notifications[0]?.['room_id'];
+            // console.log("currentRoomId", currentRoomId)
             let currentCategoryId = state.room_category_map[currentRoomId];
+            // console.log("currentCategoryId", currentCategoryId)
+
             if(!currentCategoryId) {
-                
+                return
             }
             let currentServerId = state.category_server_map[currentCategoryId];
+            // console.log("currentServerId", currentServerId)
+            
             let count = state[currentServerId][currentCategoryId][currentRoomId]
+            
             
             // update notifications
             state[currentServerId]['count'] -= count;
