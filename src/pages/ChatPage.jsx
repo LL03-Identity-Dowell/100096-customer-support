@@ -74,8 +74,8 @@ const ChatPage = () => {
     useEffect(() => {
       console.log(workspace_id, user_id)
       if(workspace_id && user_id){
-        getUserServers();
         autoJoinRoom();
+        getUserServers();
         // getUsedUsernames();
       }
     }, [user_id, workspace_id])
